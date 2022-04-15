@@ -1,0 +1,4 @@
+microarquitectura/db
+microarquitectura/output_files
+microarquitectura/incremental_db
+*.bak
