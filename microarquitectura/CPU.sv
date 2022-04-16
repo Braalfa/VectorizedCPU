@@ -45,6 +45,13 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE;
 	logic stallF, stallD, flushE, flushD;
 	
+   logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD;
+	logic resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationDE;
+	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
+	logic isScalarInstructionEM; 
+	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
+	logic isScalarInstructionEWB;
+
 	hazardsUnit #(.ADDRESSWIDTH(REG_ADDRESS_WIDTH)) hazardUnit
 	(.writeEnableScalarWBD(writeEnableScalarWBD),
 	 .writeEnableVectorWBD(writeEnableVectorWBD), 
@@ -105,7 +112,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 
 	 logic [DATA_WIDTH-1:0] reg1ScalarContentD, reg2ScalarContentD, inmediateD;
 	 logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentD, reg2VectorContentD;
-	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD, reg1AddressD, reg2AddressD;
+	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD;
 	 logic [OPCODE_WIDTH-1:0] opcodeD;
 	 
 	 Decode #(.DATA_WIDTH(DATA_WIDTH),
@@ -134,14 +141,12 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 
 	 // Decode - Execution Flip-Flop
 
-	 logic resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, 
-	 writeToMemoryEnableME, useInmediateEE, isScalarInstructionEE, writeScalarEE,
-	 isVectorScalarOperationDE;
+	 logic writeEnableScalarWBE, writeEnableVectorWBE, 
+	 writeToMemoryEnableME, useInmediateEE, writeScalarEE;
 	 logic [2:0] aluControlEE;
 	 
 	 logic [DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
 	 logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentE, reg2VectorContentE;
-	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE;
 	 
 	 logic N1, Z1, V1, C1;
 	 
@@ -198,10 +203,9 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 // Execution - Memory Flip-Flop
 	 
    logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputM;
-	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
 	logic [DATA_WIDTH*VECTOR_SIZE-1:0] dataToWriteM;
 	logic resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM;
-	logic isScalarInstructionEM; 
+	
 	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+5) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
 	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, isScalarInstructionEE}), 
 	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM, isScalarInstructionEM}));
@@ -225,9 +229,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 
 	 logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputWB;
 	 logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputWB;
-	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
 	 logic resultSelectorWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB;
-	 logic isScalarInstructionEWB;
 	 
  	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+4) MemoryFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
 	 .in({memoryOutputM, executeOuputM, resultSelectorWBM, regDestinationAddressWBM, writeEnableScalarWBM, writeEnableVectorWBM, isScalarInstructionEM}), 

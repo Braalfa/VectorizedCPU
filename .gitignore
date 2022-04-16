@@ -1,4 +1,6 @@
 microarquitectura/db
 microarquitectura/output_files
 microarquitectura/incremental_db
+microarquitectura/simulation
 *.bak
+*.rpt
