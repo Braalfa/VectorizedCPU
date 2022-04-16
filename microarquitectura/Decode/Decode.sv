@@ -41,6 +41,7 @@ module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 
 	 );
 		
 	// Fix this according to how the instructions are built
+	
 	// assign reg1Address = instruction[15:12];
 	// assign reg2Address = instruction[11:8];
 	// assign regDestinationAddress = instruction[19:16];

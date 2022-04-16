@@ -8,7 +8,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	// Control Unit
 	
 	// Variables que la unidad de control debe de manejar:
-	logic isVectorScalarOperationD; // write enable para escribir en el registro vectorial durante el Decode actual;
+	logic isVectorScalarOperationDD; // write enable para escribir en el registro vectorial durante el Decode actual;
 	logic resultSelectorWBD; // selecciona el dato a retroalimentar en el write back, 0-> salida de alu, 1-> salida de memoria;
 	logic writeEnableScalarWBD;  // write enable para escribir en el registro escalar durante el writeback;
 	logic	writeEnableVectorWBD;   // write enable para escribir en el registro vectorial durante el writeback;
@@ -30,7 +30,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	logic [OPCODE_WIDTH-1:0] opcodeE;
 	logic takeBranchE; // tomar branch
 
-	condunit #(.OPCODEWIDTH(OPCODE_WIDTH))
+	condunit #(.OPCODEWIDTH(OPCODE_WIDTH)) condunit
 	(.opcodeE(opcodeE),
 	.N(N2), .Z(Z2), .V(V2), .C(C2),
 	.takeBranchE(takeBranchE)
@@ -40,12 +40,38 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 		
 
 	//Hazards Unit 
-//	hazardsUnitsv #(WIDTH, ADDRESSWIDTH) HazardsUnit(
-//		writeEnableDWB, writeEnableDM, resultSelectorWBE, takeBranchE,
-//		regDestinationAddressWBM, regDestinationAddressWBWB, regDestinationAddressWBE,
-//		reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD,
-//		data1ForwardSelectorE, data2ForwardSelectorE,
-//		stallF, stallD, flushE, flushD);
+
+	logic [1:0] data1ScalarForwardSelectorE, data2ScalarForwardSelectorE;
+	logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE;
+	logic stallF, stallD, flushE, flushD;
+	
+	hazardsUnit #(.ADDRESSWIDTH(REG_ADDRESS_WIDTH)) hazardUnit
+	(.writeEnableScalarWBD(writeEnableScalarWBD),
+	 .writeEnableVectorWBD(writeEnableVectorWBD), 
+	 .writeToMemoryEnableMD(writeToMemoryEnableMD), 
+	 .resultSelectorWBE(resultSelectorWBE), 
+	 .takeBranchE(takeBranchE),
+	 .isScalarInstructionED(isScalarInstructionED), 
+	 .isScalarInstructionEE(isScalarInstructionEE),
+	 .isScalarInstructionEM(isScalarInstructionEM), 
+	 .isScalarInstructionEWB(isScalarInstructionEWB),
+	 .isVectorScalarOperationDD(isVectorScalarOperationDD), 
+	 .isVectorScalarOperationDE(isVectorScalarOperationDE),
+	 .writeAddressM(regDestinationAddressWBM), 
+	 .writeAddressWB(regDestinationAddressWBWB), 
+	 .writeAddressE(regDestinationAddressWBE),
+	 .reg1ReadAddressE(reg1AddressE), 
+	 .reg2ReadAddressE(reg2AddressE), 
+	 .reg1ReadAddressD(reg1AddressD), 
+	 .reg2ReadAddressD(reg2AddressD),
+	 .data1ScalarForwardSelectorE(data1ScalarForwardSelectorE), 
+	 .data2ScalarForwardSelectorE(data2ScalarForwardSelectorE),
+	 .data1VectorForwardSelectorE(data1VectorForwardSelectorE), 
+	 .data2VectorForwardSelectorE(data2VectorForwardSelectorE),
+	 .stallF(stallF), 
+	 .stallD(stallD), 
+	 .flushE(flushE), 
+	 .flushD(flushD));
 	
 	
 	//-------------------------------------------------------------------------------//
@@ -55,7 +81,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	logic [SCALAR_DATA_WIDTH-1:0] instructionF;
 	
 	 Fetch #(.PC_WIDTH(SCALAR_DATA_WIDTH), .INSTRUCTION_WIDTH(SCALAR_DATA_WIDTH)) Fetch
-	(.NewPC(NewPCF), .PCSelector(takeBranchE), .clock(clock), .reset(reset), .enable(1),
+	(.NewPC(NewPCF), .PCSelector(takeBranchE), .clock(clock), .reset(reset), .enable(!stallF),
 	 .instruction(instructionF)
 	 );
 	
@@ -64,7 +90,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	logic [SCALAR_DATA_WIDTH-1:0] instructionD;
 	
 	flipflop #(.WIDTH(SCALAR_DATA_WIDTH)) FetchFlipFlop
-	(.clk(clock), .reset(0), .enable(1),
+	(.clk(clock), .reset(flushD), .enable(!stallD),
 	 .in(instructionF), .out(instructionD));
 	 
 	//-------------------------------------------------------------------------------//
@@ -89,7 +115,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	(.clock(clock), .reset(reset), 
 	.writeEnableScalar(writeEnableScalarD), 
 	.writeEnableVector(writeEnableVectorD), 
-	.isVectorScalarOperation(isVectorScalarOperationD),
+	.isVectorScalarOperation(isVectorScalarOperationDD),
 	 .writeAddress(writeAddressD),
 	 .writeScalarData(writeScalarDataD),
 	 .writeVectorData(writeVectorDataD),
@@ -109,7 +135,8 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 // Decode - Execution Flip-Flop
 
 	 logic resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, 
-	 writeToMemoryEnableME, useInmediateEE, isScalarInstructionEE, writeScalarEE;
+	 writeToMemoryEnableME, useInmediateEE, isScalarInstructionEE, writeScalarEE,
+	 isVectorScalarOperationDE;
 	 logic [2:0] aluControlEE;
 	 
 	 logic [SCALAR_DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
@@ -118,28 +145,29 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 
 	 logic N1, Z1, V1, C1;
 	 
-	 flipflop  #(3*SCALAR_DATA_WIDTH+2*VECTOR_SIZE*VECTOR_DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+14) 
-	 DecodeFlipFlop(.clk(clock), .reset(0), .enable(1),
+	 flipflop  #(3*SCALAR_DATA_WIDTH+2*VECTOR_SIZE*VECTOR_DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+15) 
+	 DecodeFlipFlop(.clk(clock), .reset(flushE), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
-		 useInmediateED, isScalarInstructionED, writeScalarED,
+		 useInmediateED, isScalarInstructionED, writeScalarED, isVectorScalarOperationDD,
 		 N1, Z1, V1, C1}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
-			 useInmediateEE, isScalarInstructionEE, writeScalarEE,
+			 useInmediateEE, isScalarInstructionEE, writeScalarEE, isVectorScalarOperationDE,
 			 N2, Z2, V2, C2}));
 	 
 	//-------------------------------------------------------------------------------//
 
 	//Execute	
    logic [SCALAR_DATA_WIDTH-1:0] executeOuputE, dataToWriteE;
-
+	logic [SCALAR_DATA_WIDTH-1:0]  forwardWB, forwardM;
+	
 	Execute #(.SCALAR_DATA_WIDTH(SCALAR_DATA_WIDTH),
 				 .VECTOR_DATA_WIDTH(VECTOR_DATA_WIDTH),
 				 .VECTOR_SIZE(VECTOR_SIZE)) Execute
@@ -152,6 +180,12 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 .useInmediate(useInmediateEE),
 	 .isScalarInstruction(isScalarInstructionEE),
 	 .writeScalar(writeScalarEE),
+	 .forwardWB(forwardWB), 
+	 .forwardM(forwardM),
+	 .data1ScalarForwardSelector(data1ScalarForwardSelectorE),
+	 .data2ScalarForwardSelector(data2ScalarForwardSelectorE),
+	 .data1VectorForwardSelector(data1VectorForwardSelectorE),
+	 .data2VectorForwardSelector(data2VectorForwardSelectorE),
 	 .out(executeOuputE),
 	 .dataToWrite(dataToWriteE),
 	 .N(N1), 
@@ -168,10 +202,10 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
 	logic [SCALAR_DATA_WIDTH-1:0] dataToWriteM;
 	logic resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM;
-	 
-	flipflop  #(2*SCALAR_DATA_WIDTH+REG_ADDRESS_WIDTH+4) ExecuteFlipFlop(.clk(clock), .reset(0), .enable(1),
-	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME}), 
-	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM}));
+	logic isScalarInstructionEM; 
+	flipflop  #(2*SCALAR_DATA_WIDTH+REG_ADDRESS_WIDTH+5) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
+	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, isScalarInstructionEE}), 
+	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM, isScalarInstructionEM}));
 	 
    //-------------------------------------------------------------------------------//
 
@@ -186,7 +220,8 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 			  .inputData(dataToWriteM),
 			  .outputData(memoryOutputM)
 			);
- 
+			
+	assign forwardM = executeOuputM;
 	
 	 // Memory - Write Back Flip-Flop
 
@@ -194,12 +229,13 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 logic [SCALAR_DATA_WIDTH-1:0] executeOuputWB;
 	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
 	 logic resultSelectorWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB;
+	 logic isScalarInstructionEWB;
 	 
- 	flipflop  #(2*SCALAR_DATA_WIDTH+REG_ADDRESS_WIDTH+3) MemoryFlipFlop(.clk(clock), .reset(0), .enable(1),
-	 .in({memoryOutputM, executeOuputM, resultSelectorWBM, regDestinationAddressWBM, writeEnableScalarWBM, writeEnableVectorWBM}), 
-	 .out({memoryOutputWB, executeOuputWB, resultSelectorWBWB, regDestinationAddressWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB}));
+ 	flipflop  #(2*SCALAR_DATA_WIDTH+REG_ADDRESS_WIDTH+4) MemoryFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
+	 .in({memoryOutputM, executeOuputM, resultSelectorWBM, regDestinationAddressWBM, writeEnableScalarWBM, writeEnableVectorWBM, isScalarInstructionEM}), 
+	 .out({memoryOutputWB, executeOuputWB, resultSelectorWBWB, regDestinationAddressWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB, isScalarInstructionEWB}));
 
-    //-------------------------------------------------------------------------------//
+    //------------------------------------------------------------------------------//
 	 
 	//Write Back
 	 
@@ -215,6 +251,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 										outputWB[VECTOR_DATA_WIDTH*1-1:VECTOR_DATA_WIDTH*0]};
 	assign writeEnableVectorD = writeEnableVectorWBWB;
 	assign writeEnableScalarD = writeEnableScalarWBWB;
+	assign forwardWB = outputWB;
 
 		//assign forwardWB = outputWB;
 	 
