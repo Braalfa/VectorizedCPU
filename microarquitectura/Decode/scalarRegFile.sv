@@ -13,7 +13,7 @@
 	- DATA_WIDTH: width of each register
 	- ADRESSWIDTH: size of the addresses
 **/
-module scalarRegFile #(parameter DATA_WIDTH = 48, parameter REGNUM = 16, parameter ADDRESSWIDTH = 4)
+module scalarRegFile #(parameter DATA_WIDTH = 8, parameter REGNUM = 16, parameter ADDRESSWIDTH = 4)
 	(input logic clk,
 	input logic we3,
 	input logic [ADDRESSWIDTH-1:0] ra1, ra2, wa3,

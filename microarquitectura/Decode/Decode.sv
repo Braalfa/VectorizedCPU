@@ -24,18 +24,18 @@
 	- WIDTH: width of the data
 	- ADRESSWIDTH: size of the addresses in regfile
 */
-module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
+module Decode #(parameter DATA_WIDTH = 8,
 					parameter VECTOR_SIZE = 6,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
 					parameter ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4, 
-					parameter INSTRUCTION_WIDTH = 48)
+					parameter INSTRUCTION_WIDTH = 32)
 	(input logic clock, reset, writeEnableScalar, writeEnableVector, isVectorScalarOperation,
 	 input logic [ADDRESS_WIDTH-1:0] writeAddress,
-	 input logic [SCALAR_DATA_WIDTH-1:0] writeScalarData,
-	 input logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] writeVectorData,
+	 input logic [DATA_WIDTH-1:0] writeScalarData,
+	 input logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] writeVectorData,
 	 input logic [INSTRUCTION_WIDTH-1:0] instruction,
-	 output logic [SCALAR_DATA_WIDTH-1:0] reg1ScalarContent, reg2ScalarContent, inmediate,
-	 output logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] reg1VectorContent, reg2VectorContent,
+	 output logic [DATA_WIDTH-1:0] reg1ScalarContent, reg2ScalarContent, inmediate,
+	 output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContent, reg2VectorContent,
 	 output logic [ADDRESS_WIDTH-1:0] regDestinationAddress, reg1Address, reg2Address,
 	 output logic [OPCODE_WIDTH-1:0] opcode
 	 );
@@ -49,14 +49,14 @@ module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 
 	// assign inmediate[WIDTH-1:16] = 0;
 	// assign opcode = instruction[23:20];
 
-	logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] tempReg2VectorContent;
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] tempReg2VectorContent;
 	
-	mux2 #(VECTOR_DATA_WIDTH*VECTOR_SIZE) reg2VectorContentMux(.d0(tempReg2VectorContent), 
-	.d1({reg2ScalarContent[VECTOR_DATA_WIDTH-1:0],reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0]}), 
+	mux2 #(DATA_WIDTH*VECTOR_SIZE) reg2VectorContentMux(.d0(tempReg2VectorContent), 
+	.d1({reg2ScalarContent,reg2ScalarContent, reg2ScalarContent, reg2ScalarContent, reg2ScalarContent, reg2ScalarContent}), 
 	.s(isVectorScalarOperation), 
 	.y(reg2VectorContent));		
 
-	scalarRegFile #(.DATA_WIDTH(SCALAR_DATA_WIDTH), 
+	scalarRegFile #(.DATA_WIDTH(DATA_WIDTH), 
 						 .REGNUM(SCALAR_REGNUM), 
 						 .ADDRESSWIDTH(ADDRESS_WIDTH)
 						 ) scalarRegFile
@@ -66,7 +66,7 @@ module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 
    .wd3(writeScalarData),
 	.rd1(reg1ScalarContent), .rd2(reg2ScalarContent));
 
-	vectorRegFile #(.DATA_WIDTH(VECTOR_DATA_WIDTH), 
+	vectorRegFile #(.DATA_WIDTH(DATA_WIDTH), 
 						 .REGNUM(VECTOR_REGNUM), 
 						 .ADDRESSWIDTH(ADDRESS_WIDTH),
 						 .VECTOR_SIZE(VECTOR_SIZE))
