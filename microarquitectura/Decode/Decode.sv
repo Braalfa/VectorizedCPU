@@ -51,7 +51,7 @@ module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 
 	logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] tempReg2VectorContent;
 	
 	mux2 #(VECTOR_DATA_WIDTH*VECTOR_SIZE) reg2VectorContentMux(.d0(tempReg2VectorContent), 
-	.d1({reg1ScalarContent[VECTOR_DATA_WIDTH-1:0],reg1ScalarContent[VECTOR_DATA_WIDTH-1:0], reg1ScalarContent[VECTOR_DATA_WIDTH-1:0], reg1ScalarContent[VECTOR_DATA_WIDTH-1:0], reg1ScalarContent[VECTOR_DATA_WIDTH-1:0], reg1ScalarContent[VECTOR_DATA_WIDTH-1:0]}), 
+	.d1({reg2ScalarContent[VECTOR_DATA_WIDTH-1:0],reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0], reg2ScalarContent[VECTOR_DATA_WIDTH-1:0]}), 
 	.s(isVectorScalarOperation), 
 	.y(reg2VectorContent));		
 

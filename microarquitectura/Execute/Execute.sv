@@ -59,6 +59,6 @@ module Execute #(parameter SCALAR_DATA_WIDTH = 48,
 	mux2 #(SCALAR_DATA_WIDTH) executeOutputMux(.d0(vectorOut), .d1(scalarOut), .s(isScalarInstruction), .y(out));		
 	mux2 #(SCALAR_DATA_WIDTH) dataToWriteMux(
 	.d0({vectorOperand2[5], vectorOperand2[4], vectorOperand2[3], vectorOperand2[2], vectorOperand2[1], vectorOperand2[0]}), 
-	.d1(scalarData2), .s(writeScalar), .y(dataToWrite));		
+	.d1(scalarData2Final), .s(writeScalar), .y(dataToWrite));		
 endmodule
 

@@ -4,35 +4,40 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 					parameter REG_ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4)
 	(input logic clock, reset);
 
-	logic writeEnableScalarD, writeEnableVectorD, isVectorScalarOperationD,
-	resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, 
-	writeToMemoryEnableMD, useInmediateED, isScalarInstructionED, writeScalarED;
-	logic [2:0] aluControlED;
+	// ---------------------------------//
+	// Control Unit
 	
-// Control Unit
-//	controlunit #(OPCODEWIDTH) controlunit(
-//		writeEnableDD,
-//		writeDataEnableMD,
-//		resultSelectorWBD,
-//		data2SelectorED,
-//		outFlagIOD,
-//		aluControlED,
-//		opcodeD
-//	);
+	// Variables que la unidad de control debe de manejar:
+	logic isVectorScalarOperationD; // write enable para escribir en el registro vectorial durante el Decode actual;
+	logic resultSelectorWBD; // selecciona el dato a retroalimentar en el write back, 0-> salida de alu, 1-> salida de memoria;
+	logic writeEnableScalarWBD;  // write enable para escribir en el registro escalar durante el writeback;
+	logic	writeEnableVectorWBD;   // write enable para escribir en el registro vectorial durante el writeback;
+	logic writeToMemoryEnableMD; // write enable para escribir en memoria
+	logic useInmediateED; // indica si usar inmediate en lugar del registro scalar #2
+	logic isScalarInstructionED; // Indica si es una instruccion aritmetica entre escalares o entre vectores; 1-> entre escalares, 0-> entre vectores
+	logic writeScalarED; // Indica si pasar a memoria el registro escalar 2 o el registro vector 2. 1-> registro escalar 2, 0-> registro vector 2
+	logic [2:0] aluControlED; // Control de ALU
 	
+
+	// Insertar control unit aqui. Hay un ejemplo en proyecto viejo alfaro juancho
+	
+	
+	
+	// ---------------------------------//
+	// Conditional unit (Activa la variable de branching)
 	
 	logic N2, Z2, V2, C2;
-// condunit
-	
-//	condunit #(OPCODEWIDTH) condunit
-//	(takeBranchE,
-//	 opcodeE,
-//	NE2, ZE2, VE2, CE2
-//	);
-	
+	logic [OPCODE_WIDTH-1:0] opcodeE;
+	logic takeBranchE; // tomar branch
+
+	condunit #(.OPCODEWIDTH(OPCODE_WIDTH))
+	(.opcodeE(opcodeE),
+	.N(N2), .Z(Z2), .V(V2), .C(C2),
+	.takeBranchE(takeBranchE)
+	);
+
 	// -----------------//
 		
-	logic takeBranchE;
 
 	//Hazards Unit 
 //	hazardsUnitsv #(WIDTH, ADDRESSWIDTH) HazardsUnit(
@@ -69,7 +74,9 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 logic [REG_ADDRESS_WIDTH-1:0] writeAddressD;
 	 logic [SCALAR_DATA_WIDTH-1:0] writeScalarDataD;
 	 logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] writeVectorDataD;
-	 
+	 logic writeEnableScalarD;
+	 logic writeEnableVectorD;
+
 	 logic [SCALAR_DATA_WIDTH-1:0] reg1ScalarContentD, reg2ScalarContentD, inmediateD;
 	 logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] reg1VectorContentD, reg2VectorContentD;
 	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD, reg1AddressD, reg2AddressD;
@@ -108,7 +115,6 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	 logic [SCALAR_DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
 	 logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] reg1VectorContentE, reg2VectorContentE;
 	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE;
-	 logic [OPCODE_WIDTH-1:0] opcodeE;
 	 
 	 logic N1, Z1, V1, C1;
 	 
@@ -172,7 +178,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	//Memory
 	
 	logic [SCALAR_DATA_WIDTH-1:0] memoryOutputM;
-//	assign forwardM = aluOutputM;
+		//	assign forwardM = aluOutputM;
 
 	memory #(.DATA_WIDTH(SCALAR_DATA_WIDTH), .ADDRESS_WIDTH(SCALAR_DATA_WIDTH)) Memory(
 			  .writeEnable(writeToMemoryEnableMM), .clk(clock),
@@ -210,7 +216,7 @@ module CPU #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 8,
 	assign writeEnableVectorD = writeEnableVectorWBWB;
 	assign writeEnableScalarD = writeEnableScalarWBWB;
 
-	//assign forwardWB = outputWB;
+		//assign forwardWB = outputWB;
 	 
 
 	 
