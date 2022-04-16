@@ -7,7 +7,6 @@
 	- writeEnableVector
 	- writeAddress
 	- writeScalarData: data to write on the scalar register
-	- PC: current pc
 	- writeVectorData: data to write on the vector register
 	- instruction: current instruction
 	- reg1ScalarContent: content 1 on scalar register
@@ -32,7 +31,7 @@ module Decode #(parameter SCALAR_DATA_WIDTH = 48, parameter VECTOR_DATA_WIDTH = 
 					parameter INSTRUCTION_WIDTH = 48)
 	(input logic clock, reset, writeEnableScalar, writeEnableVector, isVectorScalarOperation,
 	 input logic [ADDRESS_WIDTH-1:0] writeAddress,
-	 input logic [SCALAR_DATA_WIDTH-1:0] writeScalarData, PC,
+	 input logic [SCALAR_DATA_WIDTH-1:0] writeScalarData,
 	 input logic [VECTOR_SIZE-1:0][VECTOR_DATA_WIDTH-1:0] writeVectorData,
 	 input logic [INSTRUCTION_WIDTH-1:0] instruction,
 	 output logic [SCALAR_DATA_WIDTH-1:0] reg1ScalarContent, reg2ScalarContent, inmediate,

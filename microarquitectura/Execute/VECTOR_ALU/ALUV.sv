@@ -54,16 +54,16 @@ module ALUV #(parameter DATA_WIDTH = 8,
 	always_comb begin  
       case (selector)  
 			2'b00 : begin
-				out = {outSumador[0], outSumador[1], outSumador[2], outSumador[3], outSumador[4], outSumador[5]};				
+				out = {outSumador[5], outSumador[4], outSumador[3], outSumador[2], outSumador[1], outSumador[0]};				
 			end
 			2'b01 : begin
-				out = {outRestador[0], outRestador[1], outRestador[2], outRestador[3], outRestador[4], outRestador[5]};				
+				out = {outRestador[5], outRestador[4], outRestador[3], outRestador[2], outRestador[1], outRestador[0]};				
 			end
 			2'b10 : begin
-				out = {outMultiplicador[0], outMultiplicador[1], outMultiplicador[2], outMultiplicador[3], outMultiplicador[4], outMultiplicador[5]};				
+				out = {outMultiplicador[5], outMultiplicador[4], outMultiplicador[3], outMultiplicador[2], outMultiplicador[1], outMultiplicador[0]};				
 			end
 			2'b11 : begin
-				out = {outDivisor[0], outDivisor[1], outDivisor[2], outDivisor[3], outDivisor[4], outDivisor[5]};				
+				out = {outDivisor[5], outDivisor[4], outDivisor[3], outDivisor[2], outDivisor[1], outDivisor[0]};				
 			end
       endcase 		
    end
