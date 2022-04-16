@@ -1,4 +1,4 @@
-module memory #(parameter MEM_SIZE = 1024, 
+module memory #(parameter MEM_SIZE = 4096, 
 					 parameter DATA_WIDTH = 32,
 					 parameter ADDRESS_WIDTH = 32 )(
 			  input writeEnable, clk,

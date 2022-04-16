@@ -1,4 +1,4 @@
-module ALU #(parameter WIDTH = 16)( 
+module ALU #(parameter WIDTH = 48)( 
     input [WIDTH-1:0] A,
 	 input [WIDTH-1:0] B,
 	 input [2:0] sel,

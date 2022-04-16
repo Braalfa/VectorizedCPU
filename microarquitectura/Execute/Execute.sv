@@ -11,7 +11,7 @@
 	Params: 
 	- WIDTH: width of the data
 */
-module Execute #(parameter SCALAR_DATA_WIDTH = 32,
+module Execute #(parameter SCALAR_DATA_WIDTH = 48,
 					 parameter VECTOR_DATA_WIDTH = 8,
 					 parameter VECTOR_SIZE = 6, 
 					 parameter REGNUM = 16)
@@ -46,8 +46,6 @@ module Execute #(parameter SCALAR_DATA_WIDTH = 32,
 		 .C(C) 
 	);
 	
-	mux2 #(SCALAR_DATA_WIDTH) executeOutputMux(.d0(vectorOut), .d1(scalarOut), .s(isScalarInstruction), .y(out));
-
-		
+	mux2 #(SCALAR_DATA_WIDTH) executeOutputMux(.d0(vectorOut), .d1(scalarOut), .s(isScalarInstruction), .y(out));		
 endmodule
 
