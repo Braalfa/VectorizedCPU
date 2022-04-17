@@ -1,13 +1,28 @@
 /*
 	Execution Module
 	Inputs:
-	
+	- scalarData1: dato escalar 1
+	- scalarData2: dato escalar 2
+	- scalarInmediate: dato escalar inmediato
+	- vectorOperand1: dato vectorial 1
+	- vectorOperand2: dato vectorial 2
+	- aluControl: variable de control, indica la operacion de las alus (un mismo codigo pueden ser operaciones diferentes en cada alu)
+	- useInmediate: variable de control, indica si usar inmediato en lugar de dato escalar 2
+	- isScalarInstruction: variable de control, indica si tomar el resultado de la alu escalar (1) o la alu vectorial (0)
+	- forwardWB: dato adelantado desde el Write Back, puede ser escalar (se toman solo bits iniciales) o vectorial (se realiza una conversion de formato)
+	- forwardM: dato adelantado desde Memoria, puede ser escalar (se toman solo bits iniciales) o vectorial (se realiza una conversion de formato)
+	- data1ScalarForwardSelector: variable de modulo de hazard, indica como y de donde adelantar el dato escalar 1 si corresponde
+	- data2ScalarForwardSelector: variable de modulo de hazard, indica como y de donde adelantar el dato escalar 2 si corresponde
+	- data1VectorForwardSelector: variable de modulo de hazard, indica como y de donde adelantar el dato vectorial 1 si corresponde
+	- data2VectorForwardSelector: variable de modulo de hazard, indica como y de donde adelantar el dato vectorial 2 si corresponde
 	Outputs:
-	- aluOutput: 
-	- N, Z, V, C: alu flags
-	
+	- out: salida del execute, es la salida de alguna de las dos alus
+	- dataToWrite: dato a escribir en memoria (es el segundo operando )
+	- N, Z, V, C: flags de alu escalar
+	writeScalar
 	Params: 
-	- WIDTH: width of the data
+	- DATA_WIDTH: Ancho de los datos escalares y vectoriales
+	- VECTOR_SIZE: Cantidad de datos en los vectores
 */
 
 module Execute #(parameter DATA_WIDTH = 8,
@@ -16,7 +31,7 @@ module Execute #(parameter DATA_WIDTH = 8,
 	 input logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] vectorOperand1, vectorOperand2,
 	 input [2:0] aluControl,
 	 input useInmediate,
-	 input isScalarInstruction, writeScalar,
+	 input isScalarInstruction,
 	 input logic [DATA_WIDTH*VECTOR_SIZE-1:0]  forwardWB, forwardM,
 	 input logic [1:0] data1ScalarForwardSelector, data2ScalarForwardSelector,
 	 input logic [1:0] data1VectorForwardSelector, data2VectorForwardSelector,
@@ -72,6 +87,6 @@ module Execute #(parameter DATA_WIDTH = 8,
 	);
 	
 	mux2 #(DATA_WIDTH*VECTOR_SIZE) executeOutputMux(.d0(vectorOut), .d1({{DATA_WIDTH*(VECTOR_SIZE-1){1'b0}}, scalarOut}), .s(isScalarInstruction), .y(out));		
-	assign dataToWrite = {vectorOperand2[5], vectorOperand2[4], vectorOperand2[3], vectorOperand2[2], vectorOperand2[1], vectorOperand2[0]}; 
+	assign dataToWrite = {vectorData2AfterForward[5], vectorData2AfterForward[4], vectorData2AfterForward[3], vectorData2AfterForward[2], vectorData2AfterForward[1], vectorData2AfterForward[0]}; 
 endmodule
 

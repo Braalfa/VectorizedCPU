@@ -1,6 +1,8 @@
 /*
 	Fetch  Module
 	Inputs: 
+	- NewPC: nuevo pc cuando se hace branch
+	- PCSelector: indica si tomar nuevo pc o pc+1
 	- clock
 	- reset
 	- enable

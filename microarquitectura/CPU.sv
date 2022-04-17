@@ -1,3 +1,15 @@
+
+/*
+   DATA_WIDTH: Tamano de los datos (escalares y en vector)
+	INSTRUCTION_WIDTH: Tamano de la instruccion
+   VECTOR_SIZE: Elementos en el vector
+	PC_WIDTH: Ancho del PC
+   SCALAR_REGNUM: Numero de elementos en el registro escalar
+	VECTOR_REGNUM: Numero de elementos en el registro vectorial
+   REG_ADDRESS_WIDTH: Ancho del address (para ambos registros, debe de ser el valor mas grande entre scalar y vector)
+	OPCODE_WIDTH: Ancho del codigo de OP en la instruccion
+*/
+
 module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
@@ -15,7 +27,6 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	logic writeToMemoryEnableMD; // write enable para escribir en memoria
 	logic useInmediateED; // indica si usar inmediate en lugar del registro scalar #2
 	logic isScalarInstructionED; // Indica si es una instruccion aritmetica entre escalares o entre vectores; 1-> entre escalares, 0-> entre vectores
-	logic writeScalarED; // Indica si pasar a memoria el registro escalar 2 o el registro vector 2. 1-> registro escalar 2, 0-> registro vector 2
 	logic [2:0] aluControlED; // Control de ALU
 	
 
@@ -142,7 +153,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 // Decode - Execution Flip-Flop
 
 	 logic writeEnableScalarWBE, writeEnableVectorWBE, 
-	 writeToMemoryEnableME, useInmediateEE, writeScalarEE;
+	 writeToMemoryEnableME, useInmediateEE;
 	 logic [2:0] aluControlEE;
 	 
 	 logic [DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
@@ -150,21 +161,21 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 
 	 logic N1, Z1, V1, C1;
 	 
-	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+15) 
+	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+14) 
 	 DecodeFlipFlop(.clk(clock), .reset(flushE), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
-		 useInmediateED, isScalarInstructionED, writeScalarED, isVectorScalarOperationDD,
+		 useInmediateED, isScalarInstructionED, isVectorScalarOperationDD,
 		 N1, Z1, V1, C1}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
-			 useInmediateEE, isScalarInstructionEE, writeScalarEE, isVectorScalarOperationDE,
+			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationDE,
 			 N2, Z2, V2, C2}));
 	 
 	//-------------------------------------------------------------------------------//
@@ -183,7 +194,6 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 .aluControl(aluControlEE),
 	 .useInmediate(useInmediateEE),
 	 .isScalarInstruction(isScalarInstructionEE),
-	 .writeScalar(writeScalarEE),
 	 .forwardWB(forwardWB), 
 	 .forwardM(forwardM),
 	 .data1ScalarForwardSelector(data1ScalarForwardSelectorE),

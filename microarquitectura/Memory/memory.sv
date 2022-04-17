@@ -1,3 +1,17 @@
+
+/*
+
+	Modulo de memoria: Cada elemento de memoria es un vector.
+
+	parameters
+	- MEM_SIZE: Tamano de la memoria
+	- DATA_WIDTH: Tamano de cada dato
+	- ADDRESS_WIDTH: Tamano de las direcciones
+	inputs:
+	- 
+	outputs:
+	- 
+*/
 module memory #(parameter MEM_SIZE = 4096, 
 					 parameter DATA_WIDTH = 32,
 					 parameter ADDRESS_WIDTH = 32 )(

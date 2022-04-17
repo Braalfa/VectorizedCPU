@@ -40,7 +40,7 @@ module Decode #(parameter DATA_WIDTH = 8,
 	 output logic [OPCODE_WIDTH-1:0] opcode
 	 );
 		
-	// Fix this according to how the instructions are built
+	// Arreglar esto de acuerdo a como se disenen las instrucciones
 	
 	// assign reg1Address = instruction[15:12];
 	// assign reg2Address = instruction[11:8];
