@@ -21,6 +21,9 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	// ---------------------------------//
 	// Control Unit
 	
+   logic [OPCODE_WIDTH-1:0] opcodeD;
+
+	
 	// Variables que la unidad de control debe de manejar:
 	logic isVectorScalarOperationED; // write enable para escribir en el registro vectorial durante el Decode actual;
 	logic resultSelectorWBD; // selecciona el dato a retroalimentar en el write back, 0-> salida de alu, 1-> salida de memoria;
@@ -32,6 +35,19 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	logic [2:0] aluControlED; // Control de ALU
 	logic outFlagMD; 
 
+	controlUnit #(.OPCODE_WIDTH(OPCODE_WIDTH)) controlUnit
+	(	.opcodeD(opcodeD),
+		.isVectorScalarOperationED(isVectorScalarOperationED),
+	   .resultSelectorWBD(resultSelectorWBD),
+	   .writeEnableScalarWBD(writeEnableScalarWBD),
+	   .writeEnableVectorWBD(writeEnableVectorWBD), 
+	   .writeToMemoryEnableMD(writeToMemoryEnableMD),
+	   .useInmediateED(useInmediateED),
+	   .isScalarInstructionED(isScalarInstructionED),
+	   .aluControlED(aluControlED),
+	   .outFlagMD(outFlagMD)
+		);
+	
 	// Insertar control unit aqui. Hay un ejemplo en proyecto viejo alfaro juancho
 	
 	
@@ -126,7 +142,6 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	 logic [DATA_WIDTH-1:0] reg1ScalarContentD, reg2ScalarContentD, inmediateD;
 	 logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentD, reg2VectorContentD;
 	 logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD;
-	 logic [OPCODE_WIDTH-1:0] opcodeD;
 	 
 	 Decode #(.DATA_WIDTH(DATA_WIDTH),
 				 .VECTOR_SIZE(VECTOR_SIZE), .SCALAR_REGNUM(SCALAR_REGNUM), .VECTOR_REGNUM(VECTOR_REGNUM) 
