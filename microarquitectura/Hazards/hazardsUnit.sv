@@ -8,7 +8,7 @@
 
 		
 module hazardsUnit #(parameter ADDRESSWIDTH = 4)
-	(input logic writeEnableScalarWBD, writeEnableVectorWBD, writeToMemoryEnableMD, resultSelectorWBE, takeBranchE,
+	(input logic writeEnableScalarWBWB, writeEnableScalarWBM, writeEnableVectorWBWB, writeEnableVectorWBM, resultSelectorWBE, takeBranchE,
 	input logic isScalarInstructionED, isScalarInstructionEE, isScalarInstructionEM, isScalarInstructionEWB,
 	input logic isVectorScalarOperationED, isVectorScalarOperationEE,
 	input logic [ADDRESSWIDTH-1:0] writeAddressM, writeAddressWB, writeAddressE,
@@ -27,7 +27,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 		// Scalar forwarding
 		data1ScalarForwardSelectorE = 2'b00;
 		data2ScalarForwardSelectorE = 2'b00;
-		if(writeEnableScalarWBD) begin 
+		if(writeEnableScalarWBWB) begin 
 			if (reg1ReadAddressE == writeAddressWB && isScalarInstructionEE && isScalarInstructionEWB) begin
 				data1ScalarForwardSelectorE = 2'b01;
 			end
@@ -38,7 +38,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 			end
 		end 
 		
-		if(writeToMemoryEnableMD) begin 
+		if(writeEnableScalarWBM) begin 
 			if(reg1ReadAddressE == writeAddressM && isScalarInstructionEE && isScalarInstructionEM) begin
 			data1ScalarForwardSelectorE = 2'b10;
 			end 
@@ -52,7 +52,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 		// Vector forwarding
 		data1VectorForwardSelectorE = 2'b00;
 		data2VectorForwardSelectorE = 2'b00;
-		if(writeEnableVectorWBD) begin 
+		if(writeEnableVectorWBWB) begin 
 			if (reg1ReadAddressE == writeAddressWB && !isScalarInstructionEE && !isScalarInstructionEWB) begin
 				data1VectorForwardSelectorE = 2'b01;
 			end
@@ -63,7 +63,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 			end
 		end 
 		
-		if(writeToMemoryEnableMD) begin 
+		if(writeEnableVectorWBM) begin 
 			if(reg1ReadAddressE == writeAddressM && !isScalarInstructionEE && !isScalarInstructionEM) begin
 			data1VectorForwardSelectorE = 2'b10;
 			end 
