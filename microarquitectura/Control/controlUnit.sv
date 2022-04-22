@@ -179,7 +179,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				aluControlED = 3'b111;
 				outFlagMD = 1'b0;
 			end
-			4'b1111: begin 
+			default: begin 
 				isScalarInstructionED = 1'bx;
 				isVectorScalarOperationED = 1'bx;
 				resultSelectorWBD = 1'bx;

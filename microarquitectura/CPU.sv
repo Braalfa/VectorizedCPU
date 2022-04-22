@@ -126,7 +126,7 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	logic [INSTRUCTION_WIDTH-1:0] instructionD;
 	
 	flipflop #(.WIDTH(INSTRUCTION_WIDTH)) FetchFlipFlop
-	(.clk(clock), .reset(flushD), .enable(!stallD),
+	(.clk(clock), .reset(flushD|reset), .enable(!stallD),
 	 .in(instructionF), .out(instructionD));
 	 
 	//-------------------------------------------------------------------------------//
@@ -179,7 +179,7 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	 logic N1, Z1, V1, C1;
 	 
 	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+15) 
-	 DecodeFlipFlop(.clk(clock), .reset(flushE), .enable(1'b1),
+	 DecodeFlipFlop(.clk(clock), .reset(flushE|reset), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
