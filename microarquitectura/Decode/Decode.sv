@@ -39,15 +39,12 @@ module Decode #(parameter DATA_WIDTH = 8,
 	 output logic [ADDRESS_WIDTH-1:0] regDestinationAddress, reg1Address, reg2Address,
 	 output logic [OPCODE_WIDTH-1:0] opcode
 	 );
-		
-	// Arreglar esto de acuerdo a como se disenen las instrucciones
-	
-	// assign reg1Address = instruction[15:12];
-	// assign reg2Address = instruction[11:8];
-	// assign regDestinationAddress = instruction[19:16];
-	// assign inmediate[15:0] = instruction[15:0];
-	// assign inmediate[WIDTH-1:16] = 0;
-	// assign opcode = instruction[23:20];
+			
+	assign reg1Address = instruction[15:12];
+	assign reg2Address = instruction[11:8];
+	assign regDestinationAddress = instruction[19:16];
+	assign inmediate[15:0] = instruction[15:0];
+	assign opcode = instruction[23:20];
 
 
 	scalarRegFile #(.DATA_WIDTH(DATA_WIDTH), 

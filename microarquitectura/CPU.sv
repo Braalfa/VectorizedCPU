@@ -10,7 +10,7 @@
 	OPCODE_WIDTH: Ancho del codigo de OP en la instruccion
 */
 
-module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
+module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
 					parameter REG_ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4)
