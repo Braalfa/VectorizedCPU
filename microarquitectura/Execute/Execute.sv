@@ -32,6 +32,7 @@ module Execute #(parameter DATA_WIDTH = 8,
 	 input [2:0] aluControl,
 	 input useInmediate,
 	 input isScalarInstruction,
+	 input isVectorScalarOperation,
 	 input logic [DATA_WIDTH*VECTOR_SIZE-1:0]  forwardWB, forwardM,
 	 input logic [1:0] data1ScalarForwardSelector, data2ScalarForwardSelector,
 	 input logic [1:0] data1VectorForwardSelector, data2VectorForwardSelector,
@@ -58,7 +59,8 @@ module Execute #(parameter DATA_WIDTH = 8,
 	
 	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] vectorData1AfterForward;
 	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] vectorData2AfterForward;
-	
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] vectorData2Final;
+
 	mux3  #(DATA_WIDTH*VECTOR_SIZE) vectorData1ForwardMUX(vectorOperand1,forwardWB, forwardM, 
 									data1VectorForwardSelector, vectorData1AfterForward);	
 									
@@ -66,12 +68,18 @@ module Execute #(parameter DATA_WIDTH = 8,
 									data2VectorForwardSelector, vectorData2AfterForward);	
 
 	
+	mux2 #(DATA_WIDTH*VECTOR_SIZE) vectorData2ScalarMux(.d0(vectorData2AfterForward), 
+	.d1({scalarData2Final,scalarData2Final, scalarData2Final, scalarData2Final, scalarData2Final, scalarData2Final}), 
+	.s(isVectorScalarOperation), 
+	.y(vectorData2Final));		
+
+	
 	ALUV #(.DATA_WIDTH(DATA_WIDTH), 
 			 .LANES(VECTOR_SIZE)) ALUV
 			( 
 				 .selector(aluControl),
 				 .operand1(vectorData1AfterForward),
-				 .operand2(vectorData2AfterForward),
+				 .operand2(vectorData2Final),
 				 .out(vectorOut)
 			);
 			

@@ -10,7 +10,7 @@
 	OPCODE_WIDTH: Ancho del codigo de OP en la instruccion
 */
 
-module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
+module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
 					parameter REG_ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4)
@@ -20,7 +20,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	// Control Unit
 	
 	// Variables que la unidad de control debe de manejar:
-	logic isVectorScalarOperationDD; // write enable para escribir en el registro vectorial durante el Decode actual;
+	logic isVectorScalarOperationED; // write enable para escribir en el registro vectorial durante el Decode actual;
 	logic resultSelectorWBD; // selecciona el dato a retroalimentar en el write back, 0-> salida de alu, 1-> salida de memoria;
 	logic writeEnableScalarWBD;  // write enable para escribir en el registro escalar durante el writeback;
 	logic	writeEnableVectorWBD;   // write enable para escribir en el registro vectorial durante el writeback;
@@ -57,7 +57,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	logic stallF, stallD, flushE, flushD;
 	
    logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD;
-	logic resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationDE;
+	logic resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationEE;
 	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
 	logic isScalarInstructionEM; 
 	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
@@ -73,8 +73,8 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 .isScalarInstructionEE(isScalarInstructionEE),
 	 .isScalarInstructionEM(isScalarInstructionEM), 
 	 .isScalarInstructionEWB(isScalarInstructionEWB),
-	 .isVectorScalarOperationDD(isVectorScalarOperationDD), 
-	 .isVectorScalarOperationDE(isVectorScalarOperationDE),
+	 .isVectorScalarOperationED(isVectorScalarOperationED), 
+	 .isVectorScalarOperationEE(isVectorScalarOperationEE),
 	 .writeAddressM(regDestinationAddressWBM), 
 	 .writeAddressWB(regDestinationAddressWBWB), 
 	 .writeAddressE(regDestinationAddressWBE),
@@ -133,7 +133,6 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	(.clock(clock), .reset(reset), 
 	.writeEnableScalar(writeEnableScalarD), 
 	.writeEnableVector(writeEnableVectorD), 
-	.isVectorScalarOperation(isVectorScalarOperationDD),
 	 .writeAddress(writeAddressD),
 	 .writeScalarData(writeScalarDataD),
 	 .writeVectorData(writeVectorDataD),
@@ -168,14 +167,14 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
-		 useInmediateED, isScalarInstructionED, isVectorScalarOperationDD,
+		 useInmediateED, isScalarInstructionED, isVectorScalarOperationED,
 		 N1, Z1, V1, C1}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
-			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationDE,
+			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationEE,
 			 N2, Z2, V2, C2}));
 	 
 	//-------------------------------------------------------------------------------//
@@ -193,6 +192,7 @@ module CPU #(parameter DATA_WIDTH = 8, parameter INSTRUCTION_WIDTH = 32,
 	 .vectorOperand2(reg2VectorContentE),
 	 .aluControl(aluControlEE),
 	 .useInmediate(useInmediateEE),
+	 .isVectorScalarOperation(isVectorScalarOperationEE),
 	 .isScalarInstruction(isScalarInstructionEE),
 	 .forwardWB(forwardWB), 
 	 .forwardM(forwardM),

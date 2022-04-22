@@ -10,7 +10,7 @@
 module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 	(input logic writeEnableScalarWBD, writeEnableVectorWBD, writeToMemoryEnableMD, resultSelectorWBE, takeBranchE,
 	input logic isScalarInstructionED, isScalarInstructionEE, isScalarInstructionEM, isScalarInstructionEWB,
-	input logic isVectorScalarOperationDD, isVectorScalarOperationDE,
+	input logic isVectorScalarOperationED, isVectorScalarOperationEE,
 	input logic [ADDRESSWIDTH-1:0] writeAddressM, writeAddressWB, writeAddressE,
 	reg1ReadAddressE, reg2ReadAddressE, reg1ReadAddressD, reg2ReadAddressD,
 	output logic [1:0] data1ScalarForwardSelectorE, data2ScalarForwardSelectorE,
@@ -32,7 +32,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 				data1ScalarForwardSelectorE = 2'b01;
 			end
 			if (reg2ReadAddressE == writeAddressWB 
-				&& (isScalarInstructionEE || isVectorScalarOperationDE)
+				&& (isScalarInstructionEE || isVectorScalarOperationEE)
 				&& isScalarInstructionEWB) begin
 				data2ScalarForwardSelectorE = 2'b01;
 			end
@@ -43,7 +43,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 			data1ScalarForwardSelectorE = 2'b10;
 			end 
 			if (reg2ReadAddressE == writeAddressM 
-				&& (isScalarInstructionEE || isVectorScalarOperationDE)
+				&& (isScalarInstructionEE || isVectorScalarOperationEE)
 				&& isScalarInstructionEM) begin
 			data2ScalarForwardSelectorE = 2'b10;
 			end
@@ -57,7 +57,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 				data1VectorForwardSelectorE = 2'b01;
 			end
 			if (reg2ReadAddressE == writeAddressWB 
-				&& (!isScalarInstructionEE && !isVectorScalarOperationDE)
+				&& (!isScalarInstructionEE && !isVectorScalarOperationEE)
 				&& !isScalarInstructionEWB) begin
 				data2VectorForwardSelectorE = 2'b01;
 			end
@@ -68,7 +68,7 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 			data1VectorForwardSelectorE = 2'b10;
 			end 
 			if (reg2ReadAddressE == writeAddressM 
-				&& (!isScalarInstructionEE && !isVectorScalarOperationDE)
+				&& (!isScalarInstructionEE && !isVectorScalarOperationEE)
 				&& !isScalarInstructionEM) begin
 			data2VectorForwardSelectorE = 2'b10;
 			end
@@ -78,10 +78,10 @@ module hazardsUnit #(parameter ADDRESSWIDTH = 4)
 		// Stalls on Load and Branching
 		
 		Match_12D_E_Scalar = (reg1ReadAddressD == writeAddressE && isScalarInstructionED && isScalarInstructionEE) 
-									|| (reg2ReadAddressD == writeAddressE && (isScalarInstructionED || isVectorScalarOperationDD) && isScalarInstructionEE);
+									|| (reg2ReadAddressD == writeAddressE && (isScalarInstructionED || isVectorScalarOperationED) && isScalarInstructionEE);
 		
 		Match_12D_E_Vector = (reg1ReadAddressD == writeAddressE && !isScalarInstructionED && !isScalarInstructionEE) 
-								    || (reg2ReadAddressD == writeAddressE && (!isScalarInstructionED && !isVectorScalarOperationDD) && !isScalarInstructionEE);
+								    || (reg2ReadAddressD == writeAddressE && (!isScalarInstructionED && !isVectorScalarOperationED) && !isScalarInstructionEE);
 
 		LDRstall = (Match_12D_E_Scalar || Match_12D_E_Vector) && resultSelectorWBE;
 		

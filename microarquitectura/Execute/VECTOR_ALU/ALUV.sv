@@ -54,10 +54,10 @@ module ALUV #(parameter DATA_WIDTH = 8,
 
 	logic [LANES-1:0][DATA_WIDTH-1:0] outMultiplicadorFP ;
 
-	vectorFPMultiplier #(.DATA_WIDTH(DATA_WIDTH), .LANES(LANES)) vectorMultiplier( 
+	vectorFPMultiplier #(.DATA_WIDTH(DATA_WIDTH), .LANES(LANES)) vectorFPMultiplier( 
 				 .operand1(operand1),
 				 .operand2(operand2),
-				 .out(outMultiplicador)
+				 .out(outMultiplicadorFP)
 			);	
 			
 			

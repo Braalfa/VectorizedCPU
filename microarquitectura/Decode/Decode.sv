@@ -29,7 +29,7 @@ module Decode #(parameter DATA_WIDTH = 8,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
 					parameter ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4, 
 					parameter INSTRUCTION_WIDTH = 32)
-	(input logic clock, reset, writeEnableScalar, writeEnableVector, isVectorScalarOperation,
+	(input logic clock, reset, writeEnableScalar, writeEnableVector,
 	 input logic [ADDRESS_WIDTH-1:0] writeAddress,
 	 input logic [DATA_WIDTH-1:0] writeScalarData,
 	 input logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] writeVectorData,
@@ -49,12 +49,6 @@ module Decode #(parameter DATA_WIDTH = 8,
 	// assign inmediate[WIDTH-1:16] = 0;
 	// assign opcode = instruction[23:20];
 
-	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] tempReg2VectorContent;
-	
-	mux2 #(DATA_WIDTH*VECTOR_SIZE) reg2VectorContentMux(.d0(tempReg2VectorContent), 
-	.d1({reg2ScalarContent,reg2ScalarContent, reg2ScalarContent, reg2ScalarContent, reg2ScalarContent, reg2ScalarContent}), 
-	.s(isVectorScalarOperation), 
-	.y(reg2VectorContent));		
 
 	scalarRegFile #(.DATA_WIDTH(DATA_WIDTH), 
 						 .REGNUM(SCALAR_REGNUM), 
@@ -75,6 +69,6 @@ module Decode #(parameter DATA_WIDTH = 8,
 	.we3(writeEnableVector),
 	.ra1(reg1Address), .ra2(reg2Address), .wa3(writeAddress),
    .wd3(writeVectorData),
-	.rd1(reg1VectorContent), .rd2(tempReg2VectorContent));
+	.rd1(reg1VectorContent), .rd2(reg2VectorContent));
 	
 endmodule
