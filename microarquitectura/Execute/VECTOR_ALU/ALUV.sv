@@ -70,14 +70,15 @@ module ALUV #(parameter DATA_WIDTH = 8,
 				out = {outRestador[5], outRestador[4], outRestador[3], outRestador[2], outRestador[1], outRestador[0]};				
 			end
 			3'b010 : begin
-				out = {outMultiplicador[5], outMultiplicador[4], outMultiplicador[3], outMultiplicador[2], outMultiplicador[1], outMultiplicador[0]};				
-			end
-			3'b011 : begin
 				out = {outDivisor[5], outDivisor[4], outDivisor[3], outDivisor[2], outDivisor[1], outDivisor[0]};				
 			end
-			3'b100 : begin
+			3'b011 : begin
 				out = {outMultiplicadorFP[5], outMultiplicadorFP[4], outMultiplicadorFP[3], outMultiplicadorFP[2], outMultiplicadorFP[1], outMultiplicadorFP[0]};				
 			end
+			3'b100 : begin
+				out = {outMultiplicador[5], outMultiplicador[4], outMultiplicador[3], outMultiplicador[2], outMultiplicador[1], outMultiplicador[0]};				
+			end
+
 			3'b101 : begin
 				out = {operand1[5], operand1[4], operand1[3], operand1[2], operand1[1], operand1[0]};				
 			end
