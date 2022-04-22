@@ -14,7 +14,9 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
 					parameter REG_ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4)
-	(input logic clock, reset);
+	(input logic clock, reset,
+	 output logic [VECTOR_SIZE*DATA_WIDTH-1:0] out,
+	 output logic outFlag);
 
 	// ---------------------------------//
 	// Control Unit
@@ -28,7 +30,7 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	logic useInmediateED; // indica si usar inmediate en lugar del registro scalar #2
 	logic isScalarInstructionED; // Indica si es una instruccion aritmetica entre escalares o entre vectores; 1-> entre escalares, 0-> entre vectores
 	logic [2:0] aluControlED; // Control de ALU
-	
+	logic outFlagMD; 
 
 	// Insertar control unit aqui. Hay un ejemplo en proyecto viejo alfaro juancho
 	
@@ -154,27 +156,28 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	 logic writeEnableScalarWBE, writeEnableVectorWBE, 
 	 writeToMemoryEnableME, useInmediateEE;
 	 logic [2:0] aluControlEE;
+	 logic outFlagME;
 	 
 	 logic [DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
 	 logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentE, reg2VectorContentE;
 	 
 	 logic N1, Z1, V1, C1;
 	 
-	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+14) 
+	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+15) 
 	 DecodeFlipFlop(.clk(clock), .reset(flushE), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
-		 useInmediateED, isScalarInstructionED, isVectorScalarOperationED,
+		 useInmediateED, isScalarInstructionED, isVectorScalarOperationED, outFlagMD,
 		 N1, Z1, V1, C1}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
-			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationEE,
+			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationEE, outFlagME, 
 			 N2, Z2, V2, C2}));
 	 
 	//-------------------------------------------------------------------------------//
@@ -214,11 +217,12 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	 
    logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputM;
 	logic [DATA_WIDTH*VECTOR_SIZE-1:0] dataToWriteM;
+	logic outFlagMM; 
 	logic resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM;
 	
-	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+5) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
-	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, isScalarInstructionEE}), 
-	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM, isScalarInstructionEM}));
+	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+6) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
+	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, isScalarInstructionEE, outFlagME}), 
+	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM, isScalarInstructionEM, outFlagMM}));
 	 
    //-------------------------------------------------------------------------------//
 
@@ -234,7 +238,8 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 			);
 			
 	assign forwardM = executeOuputM;
-	
+	assign out = memoryOutputM;
+	assign outFlag = outFlagMM; 
 	 // Memory - Write Back Flip-Flop
 
 	 logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputWB;
@@ -262,7 +267,6 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 32,
 	assign writeEnableVectorD = writeEnableVectorWBWB;
 	assign writeEnableScalarD = writeEnableScalarWBWB;
 	assign forwardWB = outputWB;	 
-
 	 
 endmodule
 
