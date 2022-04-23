@@ -4,3 +4,4 @@ microarquitectura/incremental_db
 microarquitectura/simulation
 *.bak
 *.rpt
+microarquitectura/outFile.txt
