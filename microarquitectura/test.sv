@@ -15,14 +15,18 @@ module test();
 	logic outFlag;
 	logic [6*16-1:0] out;
 	
+	
+	logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
+	isScalarOutputEM, isScalarReg1EM, isScalarReg2EM,
+	isScalarOutputEE, isScalarReg1EE, isScalarReg2EE,
+	isScalarOutputEWB, isScalarReg1EWB, isScalarReg2EWB,
+	useScalarAluED, useScalarAluEE;
 	logic [OPCODE_WIDTH-1:0] opcodeD;
-	logic isVectorScalarOperationED;
 	logic resultSelectorWBD; 
 	logic writeEnableScalarWBD;  
 	logic	writeEnableVectorWBD;  
 	logic writeToMemoryEnableMD; 
 	logic useInmediateED; 
-	logic isScalarInstructionED;
 	logic [2:0] aluControlED;
 	logic outFlagMD; 
    logic N2, Z2, V2, C2;
@@ -32,11 +36,9 @@ module test();
 	logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE;
 	logic stallF, stallD, flushE, flushD;
    logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD;
-	logic resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationEE;
+	logic resultSelectorWBE;
 	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
-	logic isScalarInstructionEM; 
 	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
-	logic isScalarInstructionEWB;
 	logic [PC_WIDTH-1:0] NewPCF;
 	logic [INSTRUCTION_WIDTH-1:0] instructionF;
 	logic [INSTRUCTION_WIDTH-1:0] instructionD;
@@ -72,13 +74,16 @@ module test();
 	
 	CPU CPU(clock, reset, out, outFlag, 
 	opcodeD,
-	isVectorScalarOperationED, 
+	isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
+	isScalarOutputEM, isScalarReg1EM, isScalarReg2EM,
+	isScalarOutputEE, isScalarReg1EE, isScalarReg2EE,
+	isScalarOutputEWB, isScalarReg1EWB, isScalarReg2EWB,
+	useScalarAluED, useScalarAluEE,
 	resultSelectorWBD, 
    writeEnableScalarWBD, 
 	writeEnableVectorWBD,  
 	writeToMemoryEnableMD, 
 	useInmediateED, 
-	isScalarInstructionED,
 	aluControlED, 
 	outFlagMD, 
    N2, Z2, V2, C2,
@@ -88,11 +93,9 @@ module test();
    data1VectorForwardSelectorE, data2VectorForwardSelectorE,
 	stallF, stallD, flushE, flushD,
 	regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD,
-	resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationEE,
+	resultSelectorWBE,
 	regDestinationAddressWBM,
-	isScalarInstructionEM, 
 	regDestinationAddressWBWB,
-	isScalarInstructionEWB,
 	NewPCF,
 	instructionF,
 	instructionD,
@@ -129,6 +132,7 @@ module test();
 	
 	initial begin	
 	
+		OutFile = $fopen("C://Users//Brayan//Documents//I Sem 2022//Arqui//Proyecto 2//proyecto2//microarquitectura//outfile.txt");
 		reset = 1;
 		clock = 0;
 		#10;

@@ -18,13 +18,16 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	 output logic [VECTOR_SIZE*DATA_WIDTH-1:0] out,
 	 output logic outFlag,
 	 output logic [OPCODE_WIDTH-1:0] opcodeD,
-	output logic isVectorScalarOperationED, 
+	 output logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
+	isScalarOutputEM, isScalarReg1EM, isScalarReg2EM,
+	isScalarOutputEE, isScalarReg1EE, isScalarReg2EE,
+	isScalarOutputEWB, isScalarReg1EWB, isScalarReg2EWB,
+	useScalarAluED, useScalarAluEE,
 	output logic resultSelectorWBD,
 	output logic writeEnableScalarWBD,  
 	output logic	writeEnableVectorWBD,  
 	output logic writeToMemoryEnableMD, 
 	output logic useInmediateED,
-	output logic isScalarInstructionED,
 	output logic [2:0] aluControlED,
 	output logic outFlagMD, 
    output logic N2, Z2, V2, C2,
@@ -34,11 +37,9 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	output logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE,
 	output logic stallF, stallD, flushE, flushD,
    output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD,
-	output logic resultSelectorWBE, isScalarInstructionEE, isVectorScalarOperationEE,
+	output logic resultSelectorWBE,
 	output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM,
-	output logic isScalarInstructionEM, 
 	output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB,
-	output logic isScalarInstructionEWB,
 	output logic [PC_WIDTH-1:0] NewPCF,
 	output logic [INSTRUCTION_WIDTH-1:0] instructionF,
 	output logic [INSTRUCTION_WIDTH-1:0] instructionD,
@@ -74,16 +75,17 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	
  
 	
-	
 	controlUnit #(.OPCODE_WIDTH(OPCODE_WIDTH)) controlUnit
 	(	.opcodeD(opcodeD),
-		.isVectorScalarOperationED(isVectorScalarOperationED),
+		.useScalarAluED(useScalarAluED),
+		.isScalarOutputED(isScalarOutputED), 
+		.isScalarReg1ED(isScalarReg1ED), 
+		.isScalarReg2ED(isScalarReg2ED),
 	   .resultSelectorWBD(resultSelectorWBD),
 	   .writeEnableScalarWBD(writeEnableScalarWBD),
 	   .writeEnableVectorWBD(writeEnableVectorWBD), 
 	   .writeToMemoryEnableMD(writeToMemoryEnableMD),
 	   .useInmediateED(useInmediateED),
-	   .isScalarInstructionED(isScalarInstructionED),
 	   .aluControlED(aluControlED),
 	   .outFlagMD(outFlagMD)
 		);
@@ -112,14 +114,20 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	 .writeEnableScalarWBM(writeEnableScalarWBM), 
 	 .writeEnableVectorWBWB(writeEnableVectorWBWB), 
 	 .writeEnableVectorWBM(writeEnableVectorWBM),
+	 .isScalarOutputED(isScalarOutputED),
+	 .isScalarReg1ED(isScalarReg1ED), 
+	 .isScalarReg2ED(isScalarReg2ED),
+	 .isScalarOutputEM(isScalarOutputEM), 
+	 .isScalarReg1EM(isScalarReg1EM), 
+	 .isScalarReg2EM(isScalarReg2EM),
+	 .isScalarOutputEE(isScalarOutputEE), 
+	 .isScalarReg1EE(isScalarReg1EE), 
+	 .isScalarReg2EE(isScalarReg2EE),
+	 .isScalarOutputEWB(isScalarOutputEWB), 
+	 .isScalarReg1EWB(isScalarReg1EWB), 
+	 .isScalarReg2EWB(isScalarReg2EWB),
 	 .resultSelectorWBE(resultSelectorWBE), 
 	 .takeBranchE(takeBranchE),
-	 .isScalarInstructionED(isScalarInstructionED), 
-	 .isScalarInstructionEE(isScalarInstructionEE),
-	 .isScalarInstructionEM(isScalarInstructionEM), 
-	 .isScalarInstructionEWB(isScalarInstructionEWB),
-	 .isVectorScalarOperationED(isVectorScalarOperationED), 
-	 .isVectorScalarOperationEE(isVectorScalarOperationEE),
 	 .writeAddressM(regDestinationAddressWBM), 
 	 .writeAddressWB(regDestinationAddressWBWB), 
 	 .writeAddressE(regDestinationAddressWBE),
@@ -183,22 +191,21 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	 
 	 // Decode - Execution Flip-Flop
 
-	
-	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+15) 
+	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+17) 
 	 DecodeFlipFlop(.clk(clock), .reset(flushE|reset), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
 		 regDestinationAddressWBD, reg1AddressD, reg2AddressD,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
-		 useInmediateED, isScalarInstructionED, isVectorScalarOperationED, outFlagMD,
+		 useInmediateED, outFlagMD, isScalarOutputED, isScalarReg1ED, isScalarReg2ED, useScalarAluED,
 		 N1, Z1, V1, C1}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
-			 useInmediateEE, isScalarInstructionEE, isVectorScalarOperationEE, outFlagME, 
+			 useInmediateEE, outFlagME, isScalarOutputEE, isScalarReg1EE, isScalarReg2EE, useScalarAluEE,
 			 N2, Z2, V2, C2}));
 	 
 	//-------------------------------------------------------------------------------//
@@ -215,10 +222,10 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	 .vectorOperand2(reg2VectorContentE),
 	 .aluControl(aluControlEE),
 	 .useInmediate(useInmediateEE),
-	 .isVectorScalarOperation(isVectorScalarOperationEE),
-	 .isScalarInstruction(isScalarInstructionEE),
 	 .forwardWB(forwardWB), 
 	 .forwardM(forwardM),
+	 .useScalarAlu(useScalarAluEE),
+	 .isScalarReg2(isScalarReg2EE),
 	 .data1ScalarForwardSelector(data1ScalarForwardSelectorE),
 	 .data2ScalarForwardSelector(data2ScalarForwardSelectorE),
 	 .data1VectorForwardSelector(data1VectorForwardSelectorE),
@@ -235,11 +242,13 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 
 	 // Execution - Memory Flip-Flop
 	 
-  
-	
-	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+6) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
-	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, isScalarInstructionEE, outFlagME}), 
-	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM, isScalarInstructionEM, outFlagMM}));
+ 
+
+	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+8) ExecuteFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
+	 .in({executeOuputE, regDestinationAddressWBE, dataToWriteE, resultSelectorWBE, writeEnableScalarWBE, 
+	 writeEnableVectorWBE, writeToMemoryEnableME, outFlagME, isScalarOutputEE, isScalarReg1EE, isScalarReg2EE}), 
+	 .out({executeOuputM, regDestinationAddressWBM, dataToWriteM, resultSelectorWBM, writeEnableScalarWBM, 
+	 writeEnableVectorWBM, writeToMemoryEnableMM, outFlagMM, isScalarOutputEM, isScalarReg1EM, isScalarReg2EM}));
 	 
    //-------------------------------------------------------------------------------//
 
@@ -257,10 +266,11 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 	assign forwardM = executeOuputM;
 	 // Memory - Write Back Flip-Flop
 
-	 
- 	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+5) MemoryFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
-	 .in({memoryOutputM, executeOuputM, resultSelectorWBM, regDestinationAddressWBM, writeEnableScalarWBM, writeEnableVectorWBM, isScalarInstructionEM, outFlagMM}), 
-	 .out({memoryOutputWB, executeOuputWB, resultSelectorWBWB, regDestinationAddressWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB, isScalarInstructionEWB, outputFlagMWB}));
+ 	flipflop  #(2*DATA_WIDTH*VECTOR_SIZE+REG_ADDRESS_WIDTH+7) MemoryFlipFlop(.clk(clock), .reset(reset), .enable(1'b1),
+	 .in({memoryOutputM, executeOuputM, resultSelectorWBM, regDestinationAddressWBM, writeEnableScalarWBM, writeEnableVectorWBM, outFlagMM,
+	 isScalarOutputEM, isScalarReg1EM, isScalarReg2EM}), 
+	 .out({memoryOutputWB, executeOuputWB, resultSelectorWBWB, regDestinationAddressWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB, outputFlagMWB,
+	 isScalarOutputEWB, isScalarReg1EWB, isScalarReg2EWB}));
 
     //------------------------------------------------------------------------------//
 	 
@@ -292,11 +302,11 @@ module CPU #(parameter DATA_WIDTH = 16, parameter INSTRUCTION_WIDTH = 24,
 		$display("writeEnableScalarD %b,  writeEnableVectorD %b, 	 writeAddressD %b,	 writeScalarDataD %b,	 writeVectorDataD %b,	 instructionD %b,	 reg1ScalarContentD %b, reg2ScalarContentD %b, 	 inmediateD %b,	 reg1VectorContentD %b, 	 reg2VectorContentD %b,	 regDestinationAddressWBD %b, 	 reg1AddressD %b, 	 reg2AddressD %b,	 opcode %b",
 		writeEnableScalarD,  writeEnableVectorD , 	 writeAddressD ,	 writeScalarDataD ,	 writeVectorDataD ,	 instructionD ,	 reg1ScalarContentD , reg2ScalarContentD, 	 inmediateD,	 reg1VectorContentD, 	 reg2VectorContentD ,	 regDestinationAddressWBD , 	 reg1AddressD , 	 reg2AddressD ,	 opcodeD);
 		$display("##Control Unit##");
-		$display("opcodeD %b,		isVectorScalarOperationED %b,	   resultSelectorWBD %b,	   writeEnableScalarWBD %b,	   writeEnableVectorWBD %b, 	   writeToMemoryEnableMD %b, useInmediateED %b,	   isScalarInstructionED %b,	   aluControlED %b,	   outFlagMD %b",
-		opcodeD,		isVectorScalarOperationED,	   resultSelectorWBD,	   writeEnableScalarWBD,	   writeEnableVectorWBD, 	   writeToMemoryEnableMD, useInmediateED,	   isScalarInstructionED,	   aluControlED,	   outFlagMD);
+		$display("opcodeD %b, useScalarAluED %b , isScalarOutputED %b, isScalarReg1ED %b, isScalarReg2ED %b,	resultSelectorWBD %b,	   writeEnableScalarWBD %b,	   writeEnableVectorWBD %b, 	   writeToMemoryEnableMD %b, useInmediateED %b,		   aluControlED %b,	   outFlagMD %b",
+		opcodeD,	 useScalarAluED, isScalarOutputED,isScalarReg1ED, isScalarReg2ED,  resultSelectorWBD,	   writeEnableScalarWBD,	   writeEnableVectorWBD, 	   writeToMemoryEnableMD, useInmediateED,	   aluControlED,	   outFlagMD);
 		$display("##EXECUTE##");
-		$display("reg1ScalarContentE %b, reg2ScalarContentE %b, 	 inmediateE %b,	 reg1VectorContentE %b, 	 reg2VectorContentE %b,	 aluControlEE %b,	 useInmediateEE %b,	 isVectorScalarOperationEE %b,	 isScalarInstructionEE %b,	 forwardWB %b, 	 forwardM %b,	 data1ScalarForwardSelectorE %b,	 data2ScalarForwardSelectorE %b,	 data1VectorForwardSelectorE %b,	 data2VectorForwardSelectorE %b ,	 executeOuputE %b,	 dataToWriteE %b,	 N1 %b, 	 Z1 %b, 	 V1 %b, 	 C1 %b", 
-	   reg1ScalarContentE, reg2ScalarContentE, 	 inmediateE,	 reg1VectorContentE, 	 reg2VectorContentE,	 aluControlEE,	 useInmediateEE,	 isVectorScalarOperationEE,	 isScalarInstructionEE,	 forwardWB, 	 forwardM,	 data1ScalarForwardSelectorE,	 data2ScalarForwardSelectorE,	 data1VectorForwardSelectorE,	 data2VectorForwardSelectorE,	 executeOuputE,	 dataToWriteE,	 N1, 	 Z1, 	 V1, 	 C1	);	
+		$display("reg1ScalarContentE %b, reg2ScalarContentE %b, 	 inmediateE %b,	 reg1VectorContentE %b, 	 reg2VectorContentE %b,	 aluControlEE %b,	 useInmediateEE %b,	 useScalarAluEE %b , isScalarReg2EE %b,	 forwardWB %b, 	 forwardM %b,	 data1ScalarForwardSelectorE %b,	 data2ScalarForwardSelectorE %b,	 data1VectorForwardSelectorE %b,	 data2VectorForwardSelectorE %b ,	 executeOuputE %b,	 dataToWriteE %b,	 N1 %b, 	 Z1 %b, 	 V1 %b, 	 C1 %b", 
+	   reg1ScalarContentE, reg2ScalarContentE, 	 inmediateE,	 reg1VectorContentE, 	 reg2VectorContentE,	 aluControlEE,	 useInmediateEE,	useScalarAluEE, isScalarReg2EE,	 forwardWB, 	 forwardM,	 data1ScalarForwardSelectorE,	 data2ScalarForwardSelectorE,	 data1VectorForwardSelectorE,	 data2VectorForwardSelectorE,	 executeOuputE,	 dataToWriteE,	 N1, 	 Z1, 	 V1, 	 C1	);	
 		$display("##MEMORY##");
 		$display("writeEnable %b readAddress %b writeAddress %b inputData %b outputData %b",
 		writeToMemoryEnableMM, executeOuputM[DATA_WIDTH-1:0], executeOuputM[DATA_WIDTH-1:0], dataToWriteM, memoryOutputM);

@@ -1,12 +1,11 @@
 module controlUnit #(parameter OPCODE_WIDTH = 4)
 	(	input logic [OPCODE_WIDTH-1:0] opcodeD,
-		output logic isVectorScalarOperationED,
+		output logic useScalarAluED, isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
 	   output logic resultSelectorWBD,
 	   output logic writeEnableScalarWBD,
 	   output logic writeEnableVectorWBD, 
 	   output logic writeToMemoryEnableMD,
 	   output logic useInmediateED,
-	   output logic isScalarInstructionED,
 	   output logic [2:0] aluControlED,
 	   output logic outFlagMD
 		);
@@ -15,8 +14,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 		
 		case(opcodeD)
 			4'b0000: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -26,8 +27,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0001: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -37,8 +40,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0010: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b1;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b1;
@@ -48,8 +53,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0011: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b1;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b1;
 				writeEnableVectorWBD = 1'b0;
@@ -59,8 +66,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0100: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b1;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -70,8 +79,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b1;
 			end
 			4'b0101: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b1;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b1; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b1;
 				writeEnableVectorWBD = 1'b0;
@@ -81,8 +92,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0110: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b1;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b1; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b1;
 				writeEnableVectorWBD = 1'b0;
@@ -92,8 +105,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b0111: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b1;
@@ -103,8 +118,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1000: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b1;
@@ -114,8 +131,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1001: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b1;
@@ -125,19 +144,23 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1010: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b1;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b1; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b1;
 				writeToMemoryEnableMD = 1'b0;
-				useInmediateED = 1'b1;
+				useInmediateED = 1'b0;
 				aluControlED = 3'b010;
 				outFlagMD = 1'b0;
 			end
 			4'b1011: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b1;  
+				isScalarReg1ED = 1'b1;  
+				isScalarReg2ED = 1'b1; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -147,8 +170,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1100: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -158,8 +183,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1101: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -169,8 +196,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			4'b1110: begin 
-				isScalarInstructionED = 1'b1;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b1; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
@@ -180,8 +209,10 @@ module controlUnit #(parameter OPCODE_WIDTH = 4)
 				outFlagMD = 1'b0;
 			end
 			default: begin 
-				isScalarInstructionED = 1'b0;
-				isVectorScalarOperationED = 1'b0;
+				useScalarAluED = 1'b0; 
+				isScalarOutputED = 1'b0;  
+				isScalarReg1ED = 1'b0;  
+				isScalarReg2ED = 1'b0; 
 				resultSelectorWBD = 1'b0;
 				writeEnableScalarWBD = 1'b0;
 				writeEnableVectorWBD = 1'b0;
