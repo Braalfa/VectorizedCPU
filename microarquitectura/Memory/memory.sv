@@ -25,7 +25,7 @@ module memory #(parameter MEM_SIZE = 4096,
 	assign outputData = RAM[readAddress];
 
 	initial
-		$readmemb("data.txt", RAM);
+		$readmemb("C://Users//Brayan//Documents//I Sem 2022//Arqui//Proyecto 2//proyecto2//microarquitectura//Memory//data.txt", RAM);
 		
 	always_ff @(posedge clk)
 		if (writeEnable) RAM[writeAddress] <= inputData;

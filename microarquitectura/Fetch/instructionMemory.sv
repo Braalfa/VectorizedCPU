@@ -19,7 +19,7 @@ module instructionMemory #(parameter PC_WIDTH = 32, parameter MEMORY_SIZE = 1024
 	
 	
 	initial begin
-		$readmemb("compiledInstructions.txt",memory);
+		$readmemb("C://Users//Brayan//Documents//I Sem 2022//Arqui//Proyecto 2//proyecto2//microarquitectura//Fetch//compiledInstructions.txt",memory);
 	end
 	
 	
