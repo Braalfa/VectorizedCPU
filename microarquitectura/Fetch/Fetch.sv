@@ -10,7 +10,7 @@
 	- instruction : next instruction
 */
 
-module Fetch #(parameter PC_WIDTH = 32, parameter INSTRUCTION_WIDTH = 32)
+module Fetch #(parameter PC_WIDTH = 32, parameter INSTRUCTION_WIDTH = 30)
 	(input logic [PC_WIDTH-1:0] NewPC,
 	 input logic PCSelector, clock, reset, enable,
 	 output logic [INSTRUCTION_WIDTH-1:0] instruction

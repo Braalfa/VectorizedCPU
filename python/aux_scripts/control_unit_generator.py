@@ -4,7 +4,7 @@ df = pd.read_csv("Control.csv")
 
 
 for i in range(df.shape[0]):
-    print("     4'b"+bin(i)[2:]+":begin")
+    print("     5'b"+bin(i)[2:]+":begin")
     print("         useScalarAluED = 1'b" + str(df["useScalarAlu"][i]) + ";")
     print("         isScalarOutputED = 1'b" + str(df["isScalarOutput"][i]) + ";")
     print("         isScalarReg1ED = 1'b" + str(df["isScalarReg1"][i]) + ";")

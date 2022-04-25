@@ -13,7 +13,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
 	always@(opcodeD) begin 
 		
 		case(opcodeD)
-			     5'b0:begin
+		5'b00000:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -27,7 +27,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1:begin
+     5'b00001:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -41,7 +41,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b10:begin
+     5'b00010:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -55,7 +55,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b11:begin
+     5'b00011:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -69,7 +69,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b100:begin
+     5'b00100:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -83,7 +83,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b101:begin
+     5'b00101:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -97,7 +97,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b110:begin
+     5'b00110:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -111,7 +111,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b111:begin
+     5'b00111:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -125,7 +125,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1000:begin
+     5'b01000:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -139,7 +139,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1001:begin
+     5'b01001:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -153,7 +153,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b1;
      end
 
-     5'b1010:begin
+     5'b01010:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -167,7 +167,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1011:begin
+     5'b01011:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -181,7 +181,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1100:begin
+     5'b01100:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b0;
@@ -195,7 +195,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1101:begin
+     5'b01101:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -209,7 +209,7 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1110:begin
+     5'b01110:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -223,7 +223,21 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          outFlagMD = 1'b0;
      end
 
-     5'b1111:begin
+     5'b01111:begin
+         useScalarAluED = 1'b1;
+         isScalarOutputED = 1'b0;
+         isScalarReg1ED = 1'b0;
+         isScalarReg2ED = 1'b0;
+         resultSelectorWBD = 1'b0;
+         writeEnableScalarWBD = 1'b0;
+         writeEnableVectorWBD = 1'b0;
+         writeToMemoryEnableMD = 1'b0;
+         useInmediateED = 1'b1;
+         aluControlED = 3'b111;
+         outFlagMD = 1'b0;
+     end
+
+     5'b10000:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
