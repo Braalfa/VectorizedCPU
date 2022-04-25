@@ -143,7 +143,7 @@ module test();
 		#10;
 		
 		i = 0;
-		while(i<200) begin
+		while(i<100) begin
 		   i += 1;
 			clock = 1;
 			#10	
