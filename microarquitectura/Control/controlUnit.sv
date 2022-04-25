@@ -7,13 +7,15 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
 	   output logic writeToMemoryEnableMD,
 	   output logic useInmediateED,
 	   output logic [2:0] aluControlED,
-	   output logic outFlagMD
+	   output logic outFlagMD,
+		output logic resetMaskVectorDD,
+		output logic writeToMaskVectorED
 		);
 					
 	always@(opcodeD) begin 
 		
 		case(opcodeD)
-		5'b00000:begin
+		5'b0:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -25,9 +27,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b0;
          aluControlED = 3'b0;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00001:begin
+     5'b1:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -39,9 +43,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b0;
          aluControlED = 3'b110;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00010:begin
+     5'b10:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -53,9 +59,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b0;
          aluControlED = 3'b110;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00011:begin
+     5'b11:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -67,9 +75,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b0;
          aluControlED = 3'b110;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00100:begin
+     5'b100:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -79,11 +89,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b1;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b0;
+         aluControlED = 3'b000;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00101:begin
+     5'b101:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -93,11 +105,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b1;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b1;
+         aluControlED = 3'b001;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00110:begin
+     5'b110:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -107,11 +121,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b1;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b10;
+         aluControlED = 3'b010;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b00111:begin
+     5'b111:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -121,11 +137,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b1;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b110;
+         aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01000:begin
+     5'b1000:begin
          useScalarAluED = 1'b0;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -137,9 +155,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b1;
          aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01001:begin
+     5'b1001:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b1;
@@ -151,9 +171,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b0;
          aluControlED = 3'b110;
          outFlagMD = 1'b1;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01010:begin
+     5'b1010:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -163,11 +185,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b0;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b0;
+         aluControlED = 3'b000;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01011:begin
+     5'b1011:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -177,11 +201,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b0;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b1;
+         aluControlED = 3'b001;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01100:begin
+     5'b1100:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b0;
@@ -193,9 +219,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b1;
          aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01101:begin
+     5'b1101:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b1;
          isScalarReg1ED = 1'b1;
@@ -205,11 +233,13 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          writeEnableVectorWBD = 1'b0;
          writeToMemoryEnableMD = 1'b0;
          useInmediateED = 1'b0;
-         aluControlED = 3'b1;
+         aluControlED = 3'b001;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01110:begin
+     5'b1110:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -221,9 +251,11 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b1;
          aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
-     5'b01111:begin
+     5'b1111:begin
          useScalarAluED = 1'b1;
          isScalarOutputED = 1'b0;
          isScalarReg1ED = 1'b0;
@@ -235,6 +267,8 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b1;
          aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
      end
 
      5'b10000:begin
@@ -249,6 +283,40 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
          useInmediateED = 1'b1;
          aluControlED = 3'b111;
          outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b0;
+     end
+
+     5'b10001:begin
+         useScalarAluED = 1'b0;
+         isScalarOutputED = 1'b0;
+         isScalarReg1ED = 1'b0;
+         isScalarReg2ED = 1'b0;
+         resultSelectorWBD = 1'b0;
+         writeEnableScalarWBD = 1'b0;
+         writeEnableVectorWBD = 1'b0;
+         writeToMemoryEnableMD = 1'b0;
+         useInmediateED = 1'b0;
+         aluControlED = 3'b011;
+         outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b0;
+         writeToMaskVectorED = 1'b1;
+     end
+
+     5'b10010:begin
+         useScalarAluED = 1'b0;
+         isScalarOutputED = 1'b0;
+         isScalarReg1ED = 1'b0;
+         isScalarReg2ED = 1'b0;
+         resultSelectorWBD = 1'b0;
+         writeEnableScalarWBD = 1'b0;
+         writeEnableVectorWBD = 1'b0;
+         writeToMemoryEnableMD = 1'b0;
+         useInmediateED = 1'b0;
+         aluControlED = 3'b0;
+         outFlagMD = 1'b0;
+         resetMaskVectorDD = 1'b1;
+         writeToMaskVectorED = 1'b0;
      end
 			default: begin 
 				useScalarAluED = 1'b0; 
@@ -262,6 +330,8 @@ module controlUnit #(parameter OPCODE_WIDTH = 5)
 				useInmediateED = 1'b0;
 				aluControlED = 3'b0;
 				outFlagMD = 1'b0;
+				resetMaskVectorDD = 1'b0;
+				writeToMaskVectorED = 1'b0;
 			end
 		endcase
 	

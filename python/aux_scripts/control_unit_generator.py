@@ -16,4 +16,6 @@ for i in range(df.shape[0]):
     print("         useInmediateED = 1'b" +str(df["useInmediateED"][i]) + ";")
     print("         aluControlED = 3'b" +str(df["aluControlED"][i]) + ";")
     print("         outFlagMD = 1'b" + str(df["outFlag"][i]) + ";")
+    print("         resetMaskVectorDD = 1'b" + str(df["resetMaskVectorDD"][i]) + ";")
+    print("         writeToMaskVectorED = 1'b" + str(df["writeToMaskVectorED"][i]) + ";")
     print("     end\n")

@@ -5,29 +5,27 @@ module ALUV #(parameter DATA_WIDTH = 8,
 				 input [SELECTOR_SIZE-1:0] selector,
 				 input [LANES-1:0][DATA_WIDTH-1:0] operand1,
 				 input [LANES-1:0][DATA_WIDTH-1:0] operand2,
-				 output logic [DATA_WIDTH*LANES-1:0] out
+				 input logic [LANES-1:0] vectorMask,
+				 output logic [LANES-1:0][DATA_WIDTH-1:0] out,
+				 output logic [LANES-1:0] outComparison
 			);
 
+	logic [LANES-1:0][DATA_WIDTH-1:0] unfilteredOut;
+	integer i;
 
-	//=============SUMADOR=============
+	//=============SUMADOR - RESTADOR =============
+	logic [LANES-1:0] C, V, N;
+	logic [LANES-1:0][DATA_WIDTH-1:0] outSumadorRestador ;
 
-	logic [LANES-1:0][DATA_WIDTH-1:0] outSumador;
-
-	vectorAdder #(.DATA_WIDTH(DATA_WIDTH), .LANES(LANES)) vectorAdder( 
+	vectorAdderSubstractor #(.DATA_WIDTH(DATA_WIDTH), .LANES(LANES)) vectorAdderSubstractor(
 				 .operand1(operand1),
 				 .operand2(operand2),
-				 .out(outSumador)
-			);	
-
-	//=============Restador=============
-
-	logic [LANES-1:0][DATA_WIDTH-1:0] outRestador;
-
-	vectorSubstracter #(.DATA_WIDTH(DATA_WIDTH), .LANES(LANES)) vectorSubstracter( 
-				 .operand1(operand1),
-				 .operand2(operand2),
-				 .out(outRestador)
-			);	
+				 .operationMode(selector[0]),
+				 .out(outSumadorRestador),
+				 .C(C), 
+				 .V(V), 
+				 .N(N)
+			);
 
 	//=============Multiplicador FP=============
 
@@ -41,26 +39,45 @@ module ALUV #(parameter DATA_WIDTH = 8,
 
 			
 	always_comb begin  
+		// Arithmetic output
       case (selector)  
 			3'b000 : begin
-				out = {outSumador[5], outSumador[4], outSumador[3], outSumador[2], outSumador[1], outSumador[0]};				
+				unfilteredOut = outSumadorRestador;
 			end
 			3'b001 : begin
-				out = {outRestador[5], outRestador[4], outRestador[3], outRestador[2], outRestador[1], outRestador[0]};				
+				unfilteredOut = outSumadorRestador;
 			end
 			3'b010 : begin
-				out = {outMultiplicadorFP[5], outMultiplicadorFP[4], outMultiplicadorFP[3], outMultiplicadorFP[2], outMultiplicadorFP[1], outMultiplicadorFP[0]};				
+				unfilteredOut = outMultiplicadorFP;
 			end
 			3'b110 : begin
-				out = {operand1[5], operand1[4], operand1[3], operand1[2], operand1[1], operand1[0]};				
+				unfilteredOut = operand1;
 			end
 			3'b111 : begin
-				out = {operand2[5], operand2[4], operand2[3], operand2[2], operand2[1], operand2[0]};				
+				unfilteredOut = operand2;				
 			end
 			default begin
-				out = {operand1[5], operand1[4], operand1[3], operand1[2], operand1[1], operand1[0]};
+				unfilteredOut = operand1;
 			end
-      endcase 		
+      endcase 
+	
+		// Comparison Output
+      case (selector)  
+			3'b011 : begin // LT
+				outComparison = {N[5], N[4], N[3], N[2], N[1], N[0]};
+			end
+			default begin
+				outComparison = 6'b000000;
+			end
+      endcase
+	
+		// Output filtering (according to mask)
+		for(i=0; i< LANES; i++) begin
+			if(vectorMask[i])
+				out[i] = unfilteredOut[i];
+			else
+				out[i] = operand1[i];
+		end
    end
 	
 endmodule

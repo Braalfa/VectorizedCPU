@@ -38,10 +38,12 @@ module Execute #(parameter DATA_WIDTH = 8,
 	 input logic [1:0] data1VectorForwardSelector, data2VectorForwardSelector,
 	 output logic [DATA_WIDTH*VECTOR_SIZE-1:0] out,
 	 output logic [DATA_WIDTH*VECTOR_SIZE-1:0] dataToWrite,
-	 output logic N, Z, V, C
+	 output logic N, Z, V, C,
+	 input [VECTOR_SIZE-1:0] vectorMask,
+	 output logic [VECTOR_SIZE-1:0] outVectorComparison
 	 );		
 	
-	logic [DATA_WIDTH*VECTOR_SIZE-1:0] vectorOut;
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] vectorOut;
 	logic [DATA_WIDTH-1:0] scalarOut;
 	
 	logic [DATA_WIDTH-1:0] scalarData1AfterForward;
@@ -79,7 +81,9 @@ module Execute #(parameter DATA_WIDTH = 8,
 				 .selector(aluControl),
 				 .operand1(vectorData1AfterForward),
 				 .operand2(vectorData2Final),
-				 .out(vectorOut)
+				 .vectorMask(vectorMask),
+				 .out(vectorOut),
+				 .outComparison(outVectorComparison)
 			);
 			
 	ALU #(DATA_WIDTH) ALU( 
@@ -93,7 +97,10 @@ module Execute #(parameter DATA_WIDTH = 8,
 		 .C(C) 
 	);
 	
-	mux2 #(DATA_WIDTH*VECTOR_SIZE) executeOutputMux(.d0(vectorOut), .d1({{DATA_WIDTH*(VECTOR_SIZE-1){1'b0}}, scalarOut}), .s(useScalarAlu), .y(out));		
+	mux2 #(DATA_WIDTH*VECTOR_SIZE) executeOutputMux(
+	.d0({vectorOut[5], vectorOut[4], vectorOut[3], vectorOut[2], vectorOut[1], vectorOut[0]}), 
+	.d1({{DATA_WIDTH*(VECTOR_SIZE-1){1'b0}}, scalarOut}), 
+	.s(useScalarAlu), .y(out));		
 	assign dataToWrite = {vectorData2AfterForward[5], vectorData2AfterForward[4], vectorData2AfterForward[3], vectorData2AfterForward[2], vectorData2AfterForward[1], vectorData2AfterForward[0]}; 
 endmodule
 

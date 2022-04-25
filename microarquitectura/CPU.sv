@@ -73,7 +73,11 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	// ---------------------------------//
 	// Control Unit
 	
- 
+	logic resetMaskVectorDD;
+	logic writeToMaskVectorED, writeToMaskVectorEE, writeToMaskVectorDD;
+	logic [VECTOR_SIZE-1:0] maskVectorInD;
+	logic [VECTOR_SIZE-1:0] maskVectorOutD, maskVectorOutE;
+	logic [VECTOR_SIZE-1:0] outVectorComparisonE;
 	
 	controlUnit #(.OPCODE_WIDTH(OPCODE_WIDTH)) controlUnit
 	(	.opcodeD(opcodeD),
@@ -87,7 +91,9 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	   .writeToMemoryEnableMD(writeToMemoryEnableMD),
 	   .useInmediateED(useInmediateED),
 	   .aluControlED(aluControlED),
-	   .outFlagMD(outFlagMD)
+	   .outFlagMD(outFlagMD),
+		.resetMaskVectorDD(resetMaskVectorDD),
+		.writeToMaskVectorED(writeToMaskVectorED)
 		);
 	
 	// Insertar control unit aqui. Hay un ejemplo en proyecto viejo alfaro juancho
@@ -164,8 +170,7 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	//-------------------------------------------------------------------------------//
 	
 	// Decoder
-
-	 
+	
 	 Decode #(.DATA_WIDTH(DATA_WIDTH),
 				 .VECTOR_SIZE(VECTOR_SIZE), .SCALAR_REGNUM(SCALAR_REGNUM), .VECTOR_REGNUM(VECTOR_REGNUM) 
 					, .ADDRESS_WIDTH(REG_ADDRESS_WIDTH), .OPCODE_WIDTH(OPCODE_WIDTH) 
@@ -185,13 +190,17 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	 .regDestinationAddress(regDestinationAddressWBD), 
 	 .reg1Address(reg1AddressD), 
 	 .reg2Address(reg2AddressD),
-	 .opcode(opcodeD)
+	 .opcode(opcodeD),
+	 .weMaskVector(writeToMaskVectorDD),
+	 .resetMaskVector(resetMaskVectorDD),
+	 .maskVectorIn(maskVectorInD),
+	 .maskVectorOut(maskVectorOutD)
 	 );
-	 	 
+	 
 	 
 	 // Decode - Execution Flip-Flop
 
-	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+17) 
+	 flipflop  #(3*DATA_WIDTH+2*VECTOR_SIZE*DATA_WIDTH+3*REG_ADDRESS_WIDTH+OPCODE_WIDTH+18+VECTOR_SIZE) 
 	 DecodeFlipFlop(.clk(clock), .reset(flushE|reset), .enable(1'b1),
 	 .in({reg1ScalarContentD, reg2ScalarContentD, inmediateD,
 		 reg1VectorContentD, reg2VectorContentD,
@@ -199,20 +208,21 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 		 opcodeD,
 		 resultSelectorWBD, writeEnableScalarWBD, writeEnableVectorWBD, aluControlED, writeToMemoryEnableMD,
 		 useInmediateED, outFlagMD, isScalarOutputED, isScalarReg1ED, isScalarReg2ED, useScalarAluED,
-		 N1, Z1, V1, C1}), 
+		 N1, Z1, V1, C1, writeToMaskVectorED,
+		 maskVectorOutD}), 
 	 .out({reg1ScalarContentE, reg2ScalarContentE, inmediateE,
 			 reg1VectorContentE, reg2VectorContentE,
 			 regDestinationAddressWBE, reg1AddressE, reg2AddressE,
 			 opcodeE,
 			 resultSelectorWBE, writeEnableScalarWBE, writeEnableVectorWBE, aluControlEE, writeToMemoryEnableME,
 			 useInmediateEE, outFlagME, isScalarOutputEE, isScalarReg1EE, isScalarReg2EE, useScalarAluEE,
-			 N2, Z2, V2, C2}));
+			 N2, Z2, V2, C2, writeToMaskVectorEE,
+			 maskVectorOutE}));
 	 
 	//-------------------------------------------------------------------------------//
 
 	//Execute	
   
-	
 	Execute #(.DATA_WIDTH(DATA_WIDTH),
 				 .VECTOR_SIZE(VECTOR_SIZE)) Execute
 	(.scalarData1(reg1ScalarContentE), 
@@ -235,9 +245,13 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	 .N(N1), 
 	 .Z(Z1), 
 	 .V(V1), 
-	 .C(C1)
+	 .C(C1),
+	 .vectorMask(maskVectorOutE),
+	 .outVectorComparison(outVectorComparisonE)
 	 );	
 		
+	 assign writeToMaskVectorDD = writeToMaskVectorEE;
+	 assign maskVectorInD = outVectorComparisonE;
 	 assign NewPCF = executeOuputE[PC_WIDTH-1:0];
 
 	 // Execution - Memory Flip-Flop
@@ -299,14 +313,14 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 		$display("data1ScalarForwardSelectorE %b ; data2ScalarForwardSelectorE %b ; data1VectorForwardSelectorE: %b ; data2VectorForwardSelectorE: %b ; stallF: %b, stallD: %b, flushE: %b, flushD : %b", 
 		data1ScalarForwardSelectorE, data2ScalarForwardSelectorE, data1VectorForwardSelectorE, data2VectorForwardSelectorE, stallF, stallD, flushE, flushD);
 		$display("##DECODE##");
-		$display("writeEnableScalarD %b,  writeEnableVectorD %b, 	 writeAddressD %b,	 writeScalarDataD %b,	 writeVectorDataD %b,	 instructionD %b,	 reg1ScalarContentD %b, reg2ScalarContentD %b, 	 inmediateD %b,	 reg1VectorContentD %b, 	 reg2VectorContentD %b,	 regDestinationAddressWBD %b, 	 reg1AddressD %b, 	 reg2AddressD %b,	 opcode %b",
-		writeEnableScalarD,  writeEnableVectorD , 	 writeAddressD ,	 writeScalarDataD ,	 writeVectorDataD ,	 instructionD ,	 reg1ScalarContentD , reg2ScalarContentD, 	 inmediateD,	 reg1VectorContentD, 	 reg2VectorContentD ,	 regDestinationAddressWBD , 	 reg1AddressD , 	 reg2AddressD ,	 opcodeD);
+		$display("writeEnableScalarD %b,  writeEnableVectorD %b, 	 writeAddressD %b,	 writeScalarDataD %b,	 writeVectorDataD %b,	 instructionD %b,	 reg1ScalarContentD %b, reg2ScalarContentD %b, 	 inmediateD %b,	 reg1VectorContentD %b, 	 reg2VectorContentD %b,	 regDestinationAddressWBD %b, 	 reg1AddressD %b, 	 reg2AddressD %b,	 opcode %b , writeToMaskVectorDD %b, resetMaskVectorDD %b,	 maskVectorInD %b, maskVectorOutD %b",
+		writeEnableScalarD,  writeEnableVectorD , 	 writeAddressD ,	 writeScalarDataD ,	 writeVectorDataD ,	 instructionD ,	 reg1ScalarContentD , reg2ScalarContentD, 	 inmediateD,	 reg1VectorContentD, 	 reg2VectorContentD ,	 regDestinationAddressWBD , 	 reg1AddressD , 	 reg2AddressD ,	 opcodeD, writeToMaskVectorDD, resetMaskVectorDD,	 maskVectorInD, maskVectorOutD);
 		$display("##Control Unit##");
-		$display("opcodeD %b, useScalarAluED %b , isScalarOutputED %b, isScalarReg1ED %b, isScalarReg2ED %b,	resultSelectorWBD %b,	   writeEnableScalarWBD %b,	   writeEnableVectorWBD %b, 	   writeToMemoryEnableMD %b, useInmediateED %b,		   aluControlED %b,	   outFlagMD %b",
-		opcodeD,	 useScalarAluED, isScalarOutputED,isScalarReg1ED, isScalarReg2ED,  resultSelectorWBD,	   writeEnableScalarWBD,	   writeEnableVectorWBD, 	   writeToMemoryEnableMD, useInmediateED,	   aluControlED,	   outFlagMD);
+		$display("opcodeD %b, useScalarAluED %b , isScalarOutputED %b, isScalarReg1ED %b, isScalarReg2ED %b,	resultSelectorWBD %b,	   writeEnableScalarWBD %b,	   writeEnableVectorWBD %b, 	   writeToMemoryEnableMD %b, useInmediateED %b,		   aluControlED %b,	   outFlagMD %b, resetMaskVectorDD %b, writeToMaskVectorED %b",
+		opcodeD,	 useScalarAluED, isScalarOutputED,isScalarReg1ED, isScalarReg2ED,  resultSelectorWBD,	   writeEnableScalarWBD,	   writeEnableVectorWBD, 	   writeToMemoryEnableMD, useInmediateED,	   aluControlED,	   outFlagMD,  resetMaskVectorDD, writeToMaskVectorED);
 		$display("##EXECUTE##");
-		$display("reg1ScalarContentE %b, reg2ScalarContentE %b, 	 inmediateE %b,	 reg1VectorContentE %b, 	 reg2VectorContentE %b,	 aluControlEE %b,	 useInmediateEE %b,	 useScalarAluEE %b , isScalarReg2EE %b,	 forwardWB %b, 	 forwardM %b,	 data1ScalarForwardSelectorE %b,	 data2ScalarForwardSelectorE %b,	 data1VectorForwardSelectorE %b,	 data2VectorForwardSelectorE %b ,	 executeOuputE %b,	 dataToWriteE %b,	 N1 %b, 	 Z1 %b, 	 V1 %b, 	 C1 %b", 
-	   reg1ScalarContentE, reg2ScalarContentE, 	 inmediateE,	 reg1VectorContentE, 	 reg2VectorContentE,	 aluControlEE,	 useInmediateEE,	useScalarAluEE, isScalarReg2EE,	 forwardWB, 	 forwardM,	 data1ScalarForwardSelectorE,	 data2ScalarForwardSelectorE,	 data1VectorForwardSelectorE,	 data2VectorForwardSelectorE,	 executeOuputE,	 dataToWriteE,	 N1, 	 Z1, 	 V1, 	 C1	);	
+		$display("reg1ScalarContentE %b, reg2ScalarContentE %b, 	 inmediateE %b,	 reg1VectorContentE %b, 	 reg2VectorContentE %b,	 aluControlEE %b,	 useInmediateEE %b,	 useScalarAluEE %b , isScalarReg2EE %b,	 forwardWB %b, 	 forwardM %b,	 data1ScalarForwardSelectorE %b,	 data2ScalarForwardSelectorE %b,	 data1VectorForwardSelectorE %b,	 data2VectorForwardSelectorE %b ,	 executeOuputE %b,	 dataToWriteE %b,	 N1 %b, 	 Z1 %b, 	 V1 %b, 	 C1 %b , maskVectorOutE %b, outVectorComparisonE %b", 
+	   reg1ScalarContentE, reg2ScalarContentE, 	 inmediateE,	 reg1VectorContentE, 	 reg2VectorContentE,	 aluControlEE,	 useInmediateEE,	useScalarAluEE, isScalarReg2EE,	 forwardWB, 	 forwardM,	 data1ScalarForwardSelectorE,	 data2ScalarForwardSelectorE,	 data1VectorForwardSelectorE,	 data2VectorForwardSelectorE,	 executeOuputE,	 dataToWriteE,	 N1, 	 Z1, 	 V1, 	 C1, maskVectorOutE, outVectorComparisonE);	
 		$display("##MEMORY##");
 		$display("writeEnable %b readAddress %b writeAddress %b inputData %b outputData %b",
 		writeToMemoryEnableMM, executeOuputM[DATA_WIDTH-1:0], executeOuputM[DATA_WIDTH-1:0], dataToWriteM, memoryOutputM);

@@ -19,15 +19,28 @@ module vectorRegFile #(parameter DATA_WIDTH = 8, parameter VECTOR_SIZE = 6, para
 	input logic we3,
 	input logic [ADDRESSWIDTH-1:0] ra1, ra2, wa3,
 	input logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] wd3,
-	output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0]rd1, rd2);
+	output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0]rd1, rd2,
+	input logic weMaskVector,
+	input logic resetMaskVector,
+	input logic [VECTOR_SIZE-1:0] maskVectorIn,	
+	output logic [VECTOR_SIZE-1:0] maskVectorOut);
 	
 	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] registers[REGNUM-1:0];
-		
-	always_ff @(posedge clk)
+	logic [VECTOR_SIZE-1:0] maskVector;
+	
+	always_ff @(posedge clk) begin
 		if (we3) registers[wa3] <= wd3;
+		if(resetMaskVector) begin
+			maskVector <= {VECTOR_SIZE{1'b1}};
+		end
+		if (weMaskVector) begin
+			maskVector <= maskVectorIn;
+		end
+	end
 	
 	always_comb begin
 		rd1 = registers[ra1];
 		rd2 = registers[ra2];
+		maskVectorOut = maskVector;
 	end
 endmodule

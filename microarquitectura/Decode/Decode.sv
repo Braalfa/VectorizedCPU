@@ -24,10 +24,10 @@
 	- WIDTH: width of the data
 	- ADRESSWIDTH: size of the addresses in regfile
 */
-module Decode #(parameter DATA_WIDTH = 8,
+module Decode #(parameter DATA_WIDTH = 19,
 					parameter VECTOR_SIZE = 6,
 					parameter SCALAR_REGNUM = 8, parameter VECTOR_REGNUM = 8, 
-					parameter ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 5, 
+					parameter ADDRESS_WIDTH = 3, parameter OPCODE_WIDTH = 5, 
 					parameter INSTRUCTION_WIDTH = 30)
 	(input logic clock, reset, writeEnableScalar, writeEnableVector,
 	 input logic [ADDRESS_WIDTH-1:0] writeAddress,
@@ -37,7 +37,11 @@ module Decode #(parameter DATA_WIDTH = 8,
 	 output logic [DATA_WIDTH-1:0] reg1ScalarContent, reg2ScalarContent, inmediate,
 	 output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContent, reg2VectorContent,
 	 output logic [ADDRESS_WIDTH-1:0] regDestinationAddress, reg1Address, reg2Address,
-	 output logic [OPCODE_WIDTH-1:0] opcode
+	 output logic [OPCODE_WIDTH-1:0] opcode,
+	 input logic weMaskVector,
+	 input logic resetMaskVector,
+	 input logic [VECTOR_SIZE-1:0] maskVectorIn,	
+	 output logic [VECTOR_SIZE-1:0] maskVectorOut
 	 );
 			
 	assign reg1Address = instruction[21:19];
@@ -66,6 +70,10 @@ module Decode #(parameter DATA_WIDTH = 8,
 	.we3(writeEnableVector),
 	.ra1(reg1Address), .ra2(reg2Address), .wa3(writeAddress),
    .wd3(writeVectorData),
-	.rd1(reg1VectorContent), .rd2(reg2VectorContent));
+	.rd1(reg1VectorContent), .rd2(reg2VectorContent),
+	.weMaskVector(weMaskVector),
+	.resetMaskVector(resetMaskVector || reset),
+	.maskVectorIn(maskVectorIn),	
+	.maskVectorOut(maskVectorOut));
 	
 endmodule
