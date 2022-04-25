@@ -26,9 +26,9 @@
 */
 module Decode #(parameter DATA_WIDTH = 8,
 					parameter VECTOR_SIZE = 6,
-					parameter SCALAR_REGNUM = 16, parameter VECTOR_REGNUM = 16, 
-					parameter ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 4, 
-					parameter INSTRUCTION_WIDTH = 32)
+					parameter SCALAR_REGNUM = 8, parameter VECTOR_REGNUM = 8, 
+					parameter ADDRESS_WIDTH = 4, parameter OPCODE_WIDTH = 5, 
+					parameter INSTRUCTION_WIDTH = 30)
 	(input logic clock, reset, writeEnableScalar, writeEnableVector,
 	 input logic [ADDRESS_WIDTH-1:0] writeAddress,
 	 input logic [DATA_WIDTH-1:0] writeScalarData,
@@ -40,11 +40,11 @@ module Decode #(parameter DATA_WIDTH = 8,
 	 output logic [OPCODE_WIDTH-1:0] opcode
 	 );
 			
-	assign reg1Address = instruction[15:12];
-	assign reg2Address = instruction[11:8];
-	assign regDestinationAddress = instruction[19:16];
-	assign inmediate[15:0] = instruction[15:0];
-	assign opcode = instruction[23:20];
+	assign reg1Address = instruction[21:19];
+	assign reg2Address = instruction[18:16];
+	assign regDestinationAddress = instruction[24:22];
+	assign inmediate[18:0] = instruction[18:0];
+	assign opcode = instruction[29:25];
 
 
 	scalarRegFile #(.DATA_WIDTH(DATA_WIDTH), 

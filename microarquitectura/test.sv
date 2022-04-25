@@ -1,19 +1,19 @@
 `timescale 1 ns / 1 ns
 module test();
 	
-	parameter DATA_WIDTH = 16; 
-	parameter INSTRUCTION_WIDTH = 24;
+	parameter DATA_WIDTH = 19; 
+	parameter INSTRUCTION_WIDTH = 30;
 	parameter VECTOR_SIZE = 6; 
 	parameter PC_WIDTH = 32;
-	parameter SCALAR_REGNUM = 16; 
-	parameter VECTOR_REGNUM = 16;
-	parameter REG_ADDRESS_WIDTH = 4; 
-	parameter OPCODE_WIDTH = 4;
+	parameter SCALAR_REGNUM = 8; 
+	parameter VECTOR_REGNUM = 8;
+	parameter REG_ADDRESS_WIDTH = 3; 
+	parameter OPCODE_WIDTH = 5;
 	
 	logic reset;
 	logic clock;
 	logic outFlag;
-	logic [6*16-1:0] out;
+	logic [VECTOR_SIZE*DATA_WIDTH-1:0] out;
 	
 	
 	logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,

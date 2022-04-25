@@ -7,7 +7,7 @@ module vectorFPMultiplier #(parameter DATA_WIDTH = 8, parameter LANES = 6)(
 	always_comb begin 
 		integer i;
 		for(i = 0; i<LANES; i++) begin 
-			out[i] = (operand1[i]*operand2[i])>>DATA_WIDTH;
+			out[i] = (operand1[i]*operand2[i])>>10;
 		end
 	end
 endmodule

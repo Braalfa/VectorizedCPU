@@ -72,7 +72,6 @@ module Execute #(parameter DATA_WIDTH = 8,
 	.d1({scalarData2Final,scalarData2Final, scalarData2Final, scalarData2Final, scalarData2Final, scalarData2Final}), 
 	.s(isScalarReg2), 
 	.y(vectorData2Final));		
-
 	
 	ALUV #(.DATA_WIDTH(DATA_WIDTH), 
 			 .LANES(VECTOR_SIZE)) ALUV
