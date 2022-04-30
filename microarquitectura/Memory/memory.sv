@@ -12,7 +12,7 @@
 	outputs:
 	- 
 */
-module memory #(parameter MEM_SIZE = 4096, 
+module memory #(parameter MEM_SIZE = 20000, 
 					 parameter DATA_WIDTH = 32,
 					 parameter ADDRESS_WIDTH = 32 )(
 			  input writeEnable, clk,

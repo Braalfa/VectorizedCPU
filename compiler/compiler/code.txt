@@ -1,0 +1,41 @@
+label1
+    MOVI    R3, 3
+    VLDR    V4, R3
+    MOVI    R1, 2048
+    VSMUL   V0, V4, R1
+    MOVI    R2, 4
+    VSTR    R2, V0
+    VOUT    R2 
+    MOVI    R3, 6
+    MOVI    R7, 0
+    MOVI    R5, 1
+    ADD     R6, R3, R2
+    VADD    V1, V0, V4
+    VSTR    R3, V1
+outlabel
+    VOUT    R3
+    SUB     R6, R6, R5
+    CMP     R7, R6
+    BE      next
+    JMP     outlabel
+next
+    MOVI    R3, 1
+    SLDR    R4, R3
+    VMOVI   V0, 2048
+    VMOVV   V1, V0
+    VSMUL   V2, V1, R4
+    VSUB    V2, V2, V0
+    VSTR    R3, V2
+    VOUT    R3
+    MOVI    R3, 11
+    VLDR    V4, R3
+    VMOVI   V0, 0    
+    VMOVI   V1, 130048
+    VCMPLT  V4, V0
+    VMOVV   V4, V4, V1
+    VSTR    R3, V4
+    VOUT    R3
+    VCMPRST
+    VADD    V4, V4, V4
+    VSTR    R3, V4
+    VOUT    R3
