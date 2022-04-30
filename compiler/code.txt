@@ -25,3 +25,4 @@ label2
 
 label3
     ADD     R1, R2, R3
+    VMOVV   V4, V4, V1

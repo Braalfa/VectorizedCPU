@@ -81,7 +81,7 @@ def p_reg_instr(p):
         p[0] += (p[2], p[4],)
     if p_length == 7:
         # Case REG REG
-        p[0] += (p[2], p[4], p[6],)
+        p[0] += (p[6],)
 
     result.append(p[0])
 
