@@ -65,7 +65,7 @@ def tree_to_bin(tree):
 def write_instr():
     with open("./output.txt", "w") as file:
         for instr in bin_instr:
-            file.write("%s\n" % instr[2:])
+            file.write("%s\n" % instr)
 
 
 # Analyze instructions and convert to corresponding op code for processor
