@@ -14,61 +14,61 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 8, parameter VECTOR_REGNUM = 8, 
 					parameter REG_ADDRESS_WIDTH = 3, parameter OPCODE_WIDTH = 5)
-	(input logic clock, reset,
-	 output logic [VECTOR_SIZE*DATA_WIDTH-1:0] out,
-	 output logic outFlag,
-	 output logic [OPCODE_WIDTH-1:0] opcodeD,
-	 output logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
+	(input logic clock, reset, 	
+	output logic [VECTOR_SIZE*DATA_WIDTH-1:0] out,	output logic outFlag);
+	
+	 logic [OPCODE_WIDTH-1:0] opcodeD;
+	 logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
 	isScalarOutputEM, isScalarReg1EM, isScalarReg2EM,
 	isScalarOutputEE, isScalarReg1EE, isScalarReg2EE,
 	isScalarOutputEWB, isScalarReg1EWB, isScalarReg2EWB,
-	useScalarAluED, useScalarAluEE,
-	output logic resultSelectorWBD,
-	output logic writeEnableScalarWBD,  
-	output logic	writeEnableVectorWBD,  
-	output logic writeToMemoryEnableMD, 
-	output logic useInmediateED,
-	output logic [2:0] aluControlED,
-	output logic outFlagMD, 
-   output logic N2, Z2, V2, C2,
-	output logic [OPCODE_WIDTH-1:0] opcodeE,
-	output logic takeBranchE, 
-	output logic [1:0] data1ScalarForwardSelectorE, data2ScalarForwardSelectorE,
-	output logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE,
-	output logic stallF, stallD, flushE, flushD,
-   output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD,
-	output logic resultSelectorWBE,
-	output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM,
-	output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB,
-	output logic [PC_WIDTH-1:0] NewPCF,
-	output logic [INSTRUCTION_WIDTH-1:0] instructionF,
-	output logic [INSTRUCTION_WIDTH-1:0] instructionD,
-	 output logic [REG_ADDRESS_WIDTH-1:0] writeAddressD,
-	 output logic [DATA_WIDTH-1:0] writeScalarDataD,
-	 output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] writeVectorDataD,
-	 output logic writeEnableScalarD,
-	 output logic writeEnableVectorD,
-	 output logic [DATA_WIDTH-1:0] reg1ScalarContentD, reg2ScalarContentD, inmediateD,
-	 output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentD, reg2VectorContentD,
-	 output logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD,
-	output logic writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, useInmediateEE,
-	output logic [2:0] aluControlEE,
-	output logic outFlagME,
-	output logic [DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE,
-	output logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentE, reg2VectorContentE,
-	output logic N1, Z1, V1, C1,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputE, dataToWriteE,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0]  forwardWB, forwardM,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputM,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] dataToWriteM,
-	output logic outFlagMM, 
-	output logic resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputM,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputWB,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputWB,
-	output logic resultSelectorWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB,
-	output logic outputFlagMWB,
-	output logic [DATA_WIDTH*VECTOR_SIZE-1:0] outputWB);
+	useScalarAluED, useScalarAluEE;
+	logic resultSelectorWBD;
+	logic writeEnableScalarWBD;  
+	logic	writeEnableVectorWBD;  
+	logic writeToMemoryEnableMD; 
+	logic useInmediateED;
+	logic [2:0] aluControlED;
+	logic outFlagMD;
+   logic N2, Z2, V2, C2;
+	logic [OPCODE_WIDTH-1:0] opcodeE;
+	logic takeBranchE;
+	logic [1:0] data1ScalarForwardSelectorE, data2ScalarForwardSelectorE;
+	logic [1:0] data1VectorForwardSelectorE, data2VectorForwardSelectorE;
+	logic stallF, stallD, flushE, flushD;
+   logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBE, reg1AddressE, reg2AddressE, reg1AddressD, reg2AddressD;
+	logic resultSelectorWBE;
+	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBM;
+	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBWB;
+	logic [PC_WIDTH-1:0] NewPCF;
+	logic [INSTRUCTION_WIDTH-1:0] instructionF;
+	logic [INSTRUCTION_WIDTH-1:0] instructionD;
+   logic [REG_ADDRESS_WIDTH-1:0] writeAddressD;
+	logic [DATA_WIDTH-1:0] writeScalarDataD;
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] writeVectorDataD;
+	logic writeEnableScalarD;
+	logic writeEnableVectorD;
+	logic [DATA_WIDTH-1:0] reg1ScalarContentD, reg2ScalarContentD, inmediateD;
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentD, reg2VectorContentD;
+	logic [REG_ADDRESS_WIDTH-1:0] regDestinationAddressWBD;
+	logic writeEnableScalarWBE, writeEnableVectorWBE, writeToMemoryEnableME, useInmediateEE;
+	logic [2:0] aluControlEE;
+	logic outFlagME;
+	logic [DATA_WIDTH-1:0] reg1ScalarContentE, reg2ScalarContentE, inmediateE;
+	logic [VECTOR_SIZE-1:0][DATA_WIDTH-1:0] reg1VectorContentE, reg2VectorContentE;
+	logic N1, Z1, V1, C1;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputE, dataToWriteE;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0]  forwardWB, forwardM;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputM;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] dataToWriteM;
+	logic outFlagMM;
+	logic resultSelectorWBM, writeEnableScalarWBM, writeEnableVectorWBM, writeToMemoryEnableMM;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputM;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] memoryOutputWB;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] executeOuputWB;
+	logic resultSelectorWBWB, writeEnableScalarWBWB, writeEnableVectorWBWB;
+	logic outputFlagMWB;
+	logic [DATA_WIDTH*VECTOR_SIZE-1:0] outputWB;
 
 	// ---------------------------------//
 	// Control Unit
