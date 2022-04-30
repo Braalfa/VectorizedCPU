@@ -1,0 +1,1094 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+
+Grammar
+
+Rule 0     S' -> code
+Rule 1     code -> body
+Rule 2     body -> instruction body
+Rule 3     body -> label body
+Rule 4     body -> <empty>
+Rule 5     label -> LABEL
+Rule 6     instruction -> spe_instr
+Rule 7     instruction -> ari_instr
+Rule 8     instruction -> reg_instr
+Rule 9     instruction -> mem_instr
+Rule 10    instruction -> bra_instr
+Rule 11    ari_instr -> ari_instr_name REG COMMA REG COMMA REG
+Rule 12    reg_instr -> reg_instr_name REG COMMA REG COMMA REG
+Rule 13    reg_instr -> reg_instr_name REG COMMA REG
+Rule 14    reg_instr -> reg_instr_name REG COMMA IMM
+Rule 15    reg_instr -> reg_instr_name
+Rule 16    mem_instr -> mem_instr_name REG COMMA REG
+Rule 17    mem_instr -> mem_instr_name REG
+Rule 18    bra_instr -> bra_instr_name LABEL
+Rule 19    spe_instr -> NOP
+Rule 20    ari_instr_name -> ADD
+Rule 21    ari_instr_name -> SUB
+Rule 22    ari_instr_name -> VADD
+Rule 23    ari_instr_name -> VSUB
+Rule 24    ari_instr_name -> VSMUL
+Rule 25    reg_instr_name -> MOVI
+Rule 26    reg_instr_name -> CMP
+Rule 27    reg_instr_name -> VMOVV
+Rule 28    reg_instr_name -> VMOVI
+Rule 29    reg_instr_name -> VCMPLT
+Rule 30    reg_instr_name -> VCMPRST
+Rule 31    mem_instr_name -> VSTR
+Rule 32    mem_instr_name -> VLDR
+Rule 33    mem_instr_name -> SLDR
+Rule 34    mem_instr_name -> VOUT
+Rule 35    bra_instr_name -> JMP
+Rule 36    bra_instr_name -> BGE
+Rule 37    bra_instr_name -> BE
+
+Terminals, with rules where they appear
+
+ADD                  : 20
+BE                   : 37
+BGE                  : 36
+CMP                  : 26
+COMMA                : 11 11 12 12 13 14 16
+COMMENT              : 
+IMM                  : 14
+JMP                  : 35
+LABEL                : 5 18
+MOVI                 : 25
+NOP                  : 19
+REG                  : 11 11 11 12 12 12 13 13 14 16 16 17
+SLDR                 : 33
+SUB                  : 21
+VADD                 : 22
+VCMPLT               : 29
+VCMPRST              : 30
+VLDR                 : 32
+VMOVI                : 28
+VMOVV                : 27
+VOUT                 : 34
+VSMUL                : 24
+VSTR                 : 31
+VSUB                 : 23
+error                : 
+
+Nonterminals, with rules where they appear
+
+ari_instr            : 7
+ari_instr_name       : 11
+body                 : 1 2 3
+bra_instr            : 10
+bra_instr_name       : 18
+code                 : 0
+instruction          : 2
+label                : 3
+mem_instr            : 9
+mem_instr_name       : 16 17
+reg_instr            : 8
+reg_instr_name       : 12 13 14 15
+spe_instr            : 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . code
+    (1) code -> . body
+    (2) body -> . instruction body
+    (3) body -> . label body
+    (4) body -> .
+    (6) instruction -> . spe_instr
+    (7) instruction -> . ari_instr
+    (8) instruction -> . reg_instr
+    (9) instruction -> . mem_instr
+    (10) instruction -> . bra_instr
+    (5) label -> . LABEL
+    (19) spe_instr -> . NOP
+    (11) ari_instr -> . ari_instr_name REG COMMA REG COMMA REG
+    (12) reg_instr -> . reg_instr_name REG COMMA REG COMMA REG
+    (13) reg_instr -> . reg_instr_name REG COMMA REG
+    (14) reg_instr -> . reg_instr_name REG COMMA IMM
+    (15) reg_instr -> . reg_instr_name
+    (16) mem_instr -> . mem_instr_name REG COMMA REG
+    (17) mem_instr -> . mem_instr_name REG
+    (18) bra_instr -> . bra_instr_name LABEL
+    (20) ari_instr_name -> . ADD
+    (21) ari_instr_name -> . SUB
+    (22) ari_instr_name -> . VADD
+    (23) ari_instr_name -> . VSUB
+    (24) ari_instr_name -> . VSMUL
+    (25) reg_instr_name -> . MOVI
+    (26) reg_instr_name -> . CMP
+    (27) reg_instr_name -> . VMOVV
+    (28) reg_instr_name -> . VMOVI
+    (29) reg_instr_name -> . VCMPLT
+    (30) reg_instr_name -> . VCMPRST
+    (31) mem_instr_name -> . VSTR
+    (32) mem_instr_name -> . VLDR
+    (33) mem_instr_name -> . SLDR
+    (34) mem_instr_name -> . VOUT
+    (35) bra_instr_name -> . JMP
+    (36) bra_instr_name -> . BGE
+    (37) bra_instr_name -> . BE
+
+    $end            reduce using rule 4 (body -> .)
+    LABEL           shift and go to state 10
+    NOP             shift and go to state 11
+    ADD             shift and go to state 16
+    SUB             shift and go to state 17
+    VADD            shift and go to state 18
+    VSUB            shift and go to state 19
+    VSMUL           shift and go to state 20
+    MOVI            shift and go to state 21
+    CMP             shift and go to state 22
+    VMOVV           shift and go to state 23
+    VMOVI           shift and go to state 24
+    VCMPLT          shift and go to state 25
+    VCMPRST         shift and go to state 26
+    VSTR            shift and go to state 27
+    VLDR            shift and go to state 28
+    SLDR            shift and go to state 29
+    VOUT            shift and go to state 30
+    JMP             shift and go to state 31
+    BGE             shift and go to state 32
+    BE              shift and go to state 33
+
+    code                           shift and go to state 1
+    body                           shift and go to state 2
+    instruction                    shift and go to state 3
+    label                          shift and go to state 4
+    spe_instr                      shift and go to state 5
+    ari_instr                      shift and go to state 6
+    reg_instr                      shift and go to state 7
+    mem_instr                      shift and go to state 8
+    bra_instr                      shift and go to state 9
+    ari_instr_name                 shift and go to state 12
+    reg_instr_name                 shift and go to state 13
+    mem_instr_name                 shift and go to state 14
+    bra_instr_name                 shift and go to state 15
+
+state 1
+
+    (0) S' -> code .
+
+
+
+state 2
+
+    (1) code -> body .
+
+    $end            reduce using rule 1 (code -> body .)
+
+
+state 3
+
+    (2) body -> instruction . body
+    (2) body -> . instruction body
+    (3) body -> . label body
+    (4) body -> .
+    (6) instruction -> . spe_instr
+    (7) instruction -> . ari_instr
+    (8) instruction -> . reg_instr
+    (9) instruction -> . mem_instr
+    (10) instruction -> . bra_instr
+    (5) label -> . LABEL
+    (19) spe_instr -> . NOP
+    (11) ari_instr -> . ari_instr_name REG COMMA REG COMMA REG
+    (12) reg_instr -> . reg_instr_name REG COMMA REG COMMA REG
+    (13) reg_instr -> . reg_instr_name REG COMMA REG
+    (14) reg_instr -> . reg_instr_name REG COMMA IMM
+    (15) reg_instr -> . reg_instr_name
+    (16) mem_instr -> . mem_instr_name REG COMMA REG
+    (17) mem_instr -> . mem_instr_name REG
+    (18) bra_instr -> . bra_instr_name LABEL
+    (20) ari_instr_name -> . ADD
+    (21) ari_instr_name -> . SUB
+    (22) ari_instr_name -> . VADD
+    (23) ari_instr_name -> . VSUB
+    (24) ari_instr_name -> . VSMUL
+    (25) reg_instr_name -> . MOVI
+    (26) reg_instr_name -> . CMP
+    (27) reg_instr_name -> . VMOVV
+    (28) reg_instr_name -> . VMOVI
+    (29) reg_instr_name -> . VCMPLT
+    (30) reg_instr_name -> . VCMPRST
+    (31) mem_instr_name -> . VSTR
+    (32) mem_instr_name -> . VLDR
+    (33) mem_instr_name -> . SLDR
+    (34) mem_instr_name -> . VOUT
+    (35) bra_instr_name -> . JMP
+    (36) bra_instr_name -> . BGE
+    (37) bra_instr_name -> . BE
+
+    $end            reduce using rule 4 (body -> .)
+    LABEL           shift and go to state 10
+    NOP             shift and go to state 11
+    ADD             shift and go to state 16
+    SUB             shift and go to state 17
+    VADD            shift and go to state 18
+    VSUB            shift and go to state 19
+    VSMUL           shift and go to state 20
+    MOVI            shift and go to state 21
+    CMP             shift and go to state 22
+    VMOVV           shift and go to state 23
+    VMOVI           shift and go to state 24
+    VCMPLT          shift and go to state 25
+    VCMPRST         shift and go to state 26
+    VSTR            shift and go to state 27
+    VLDR            shift and go to state 28
+    SLDR            shift and go to state 29
+    VOUT            shift and go to state 30
+    JMP             shift and go to state 31
+    BGE             shift and go to state 32
+    BE              shift and go to state 33
+
+    instruction                    shift and go to state 3
+    body                           shift and go to state 34
+    label                          shift and go to state 4
+    spe_instr                      shift and go to state 5
+    ari_instr                      shift and go to state 6
+    reg_instr                      shift and go to state 7
+    mem_instr                      shift and go to state 8
+    bra_instr                      shift and go to state 9
+    ari_instr_name                 shift and go to state 12
+    reg_instr_name                 shift and go to state 13
+    mem_instr_name                 shift and go to state 14
+    bra_instr_name                 shift and go to state 15
+
+state 4
+
+    (3) body -> label . body
+    (2) body -> . instruction body
+    (3) body -> . label body
+    (4) body -> .
+    (6) instruction -> . spe_instr
+    (7) instruction -> . ari_instr
+    (8) instruction -> . reg_instr
+    (9) instruction -> . mem_instr
+    (10) instruction -> . bra_instr
+    (5) label -> . LABEL
+    (19) spe_instr -> . NOP
+    (11) ari_instr -> . ari_instr_name REG COMMA REG COMMA REG
+    (12) reg_instr -> . reg_instr_name REG COMMA REG COMMA REG
+    (13) reg_instr -> . reg_instr_name REG COMMA REG
+    (14) reg_instr -> . reg_instr_name REG COMMA IMM
+    (15) reg_instr -> . reg_instr_name
+    (16) mem_instr -> . mem_instr_name REG COMMA REG
+    (17) mem_instr -> . mem_instr_name REG
+    (18) bra_instr -> . bra_instr_name LABEL
+    (20) ari_instr_name -> . ADD
+    (21) ari_instr_name -> . SUB
+    (22) ari_instr_name -> . VADD
+    (23) ari_instr_name -> . VSUB
+    (24) ari_instr_name -> . VSMUL
+    (25) reg_instr_name -> . MOVI
+    (26) reg_instr_name -> . CMP
+    (27) reg_instr_name -> . VMOVV
+    (28) reg_instr_name -> . VMOVI
+    (29) reg_instr_name -> . VCMPLT
+    (30) reg_instr_name -> . VCMPRST
+    (31) mem_instr_name -> . VSTR
+    (32) mem_instr_name -> . VLDR
+    (33) mem_instr_name -> . SLDR
+    (34) mem_instr_name -> . VOUT
+    (35) bra_instr_name -> . JMP
+    (36) bra_instr_name -> . BGE
+    (37) bra_instr_name -> . BE
+
+    $end            reduce using rule 4 (body -> .)
+    LABEL           shift and go to state 10
+    NOP             shift and go to state 11
+    ADD             shift and go to state 16
+    SUB             shift and go to state 17
+    VADD            shift and go to state 18
+    VSUB            shift and go to state 19
+    VSMUL           shift and go to state 20
+    MOVI            shift and go to state 21
+    CMP             shift and go to state 22
+    VMOVV           shift and go to state 23
+    VMOVI           shift and go to state 24
+    VCMPLT          shift and go to state 25
+    VCMPRST         shift and go to state 26
+    VSTR            shift and go to state 27
+    VLDR            shift and go to state 28
+    SLDR            shift and go to state 29
+    VOUT            shift and go to state 30
+    JMP             shift and go to state 31
+    BGE             shift and go to state 32
+    BE              shift and go to state 33
+
+    label                          shift and go to state 4
+    body                           shift and go to state 35
+    instruction                    shift and go to state 3
+    spe_instr                      shift and go to state 5
+    ari_instr                      shift and go to state 6
+    reg_instr                      shift and go to state 7
+    mem_instr                      shift and go to state 8
+    bra_instr                      shift and go to state 9
+    ari_instr_name                 shift and go to state 12
+    reg_instr_name                 shift and go to state 13
+    mem_instr_name                 shift and go to state 14
+    bra_instr_name                 shift and go to state 15
+
+state 5
+
+    (6) instruction -> spe_instr .
+
+    LABEL           reduce using rule 6 (instruction -> spe_instr .)
+    NOP             reduce using rule 6 (instruction -> spe_instr .)
+    ADD             reduce using rule 6 (instruction -> spe_instr .)
+    SUB             reduce using rule 6 (instruction -> spe_instr .)
+    VADD            reduce using rule 6 (instruction -> spe_instr .)
+    VSUB            reduce using rule 6 (instruction -> spe_instr .)
+    VSMUL           reduce using rule 6 (instruction -> spe_instr .)
+    MOVI            reduce using rule 6 (instruction -> spe_instr .)
+    CMP             reduce using rule 6 (instruction -> spe_instr .)
+    VMOVV           reduce using rule 6 (instruction -> spe_instr .)
+    VMOVI           reduce using rule 6 (instruction -> spe_instr .)
+    VCMPLT          reduce using rule 6 (instruction -> spe_instr .)
+    VCMPRST         reduce using rule 6 (instruction -> spe_instr .)
+    VSTR            reduce using rule 6 (instruction -> spe_instr .)
+    VLDR            reduce using rule 6 (instruction -> spe_instr .)
+    SLDR            reduce using rule 6 (instruction -> spe_instr .)
+    VOUT            reduce using rule 6 (instruction -> spe_instr .)
+    JMP             reduce using rule 6 (instruction -> spe_instr .)
+    BGE             reduce using rule 6 (instruction -> spe_instr .)
+    BE              reduce using rule 6 (instruction -> spe_instr .)
+    $end            reduce using rule 6 (instruction -> spe_instr .)
+
+
+state 6
+
+    (7) instruction -> ari_instr .
+
+    LABEL           reduce using rule 7 (instruction -> ari_instr .)
+    NOP             reduce using rule 7 (instruction -> ari_instr .)
+    ADD             reduce using rule 7 (instruction -> ari_instr .)
+    SUB             reduce using rule 7 (instruction -> ari_instr .)
+    VADD            reduce using rule 7 (instruction -> ari_instr .)
+    VSUB            reduce using rule 7 (instruction -> ari_instr .)
+    VSMUL           reduce using rule 7 (instruction -> ari_instr .)
+    MOVI            reduce using rule 7 (instruction -> ari_instr .)
+    CMP             reduce using rule 7 (instruction -> ari_instr .)
+    VMOVV           reduce using rule 7 (instruction -> ari_instr .)
+    VMOVI           reduce using rule 7 (instruction -> ari_instr .)
+    VCMPLT          reduce using rule 7 (instruction -> ari_instr .)
+    VCMPRST         reduce using rule 7 (instruction -> ari_instr .)
+    VSTR            reduce using rule 7 (instruction -> ari_instr .)
+    VLDR            reduce using rule 7 (instruction -> ari_instr .)
+    SLDR            reduce using rule 7 (instruction -> ari_instr .)
+    VOUT            reduce using rule 7 (instruction -> ari_instr .)
+    JMP             reduce using rule 7 (instruction -> ari_instr .)
+    BGE             reduce using rule 7 (instruction -> ari_instr .)
+    BE              reduce using rule 7 (instruction -> ari_instr .)
+    $end            reduce using rule 7 (instruction -> ari_instr .)
+
+
+state 7
+
+    (8) instruction -> reg_instr .
+
+    LABEL           reduce using rule 8 (instruction -> reg_instr .)
+    NOP             reduce using rule 8 (instruction -> reg_instr .)
+    ADD             reduce using rule 8 (instruction -> reg_instr .)
+    SUB             reduce using rule 8 (instruction -> reg_instr .)
+    VADD            reduce using rule 8 (instruction -> reg_instr .)
+    VSUB            reduce using rule 8 (instruction -> reg_instr .)
+    VSMUL           reduce using rule 8 (instruction -> reg_instr .)
+    MOVI            reduce using rule 8 (instruction -> reg_instr .)
+    CMP             reduce using rule 8 (instruction -> reg_instr .)
+    VMOVV           reduce using rule 8 (instruction -> reg_instr .)
+    VMOVI           reduce using rule 8 (instruction -> reg_instr .)
+    VCMPLT          reduce using rule 8 (instruction -> reg_instr .)
+    VCMPRST         reduce using rule 8 (instruction -> reg_instr .)
+    VSTR            reduce using rule 8 (instruction -> reg_instr .)
+    VLDR            reduce using rule 8 (instruction -> reg_instr .)
+    SLDR            reduce using rule 8 (instruction -> reg_instr .)
+    VOUT            reduce using rule 8 (instruction -> reg_instr .)
+    JMP             reduce using rule 8 (instruction -> reg_instr .)
+    BGE             reduce using rule 8 (instruction -> reg_instr .)
+    BE              reduce using rule 8 (instruction -> reg_instr .)
+    $end            reduce using rule 8 (instruction -> reg_instr .)
+
+
+state 8
+
+    (9) instruction -> mem_instr .
+
+    LABEL           reduce using rule 9 (instruction -> mem_instr .)
+    NOP             reduce using rule 9 (instruction -> mem_instr .)
+    ADD             reduce using rule 9 (instruction -> mem_instr .)
+    SUB             reduce using rule 9 (instruction -> mem_instr .)
+    VADD            reduce using rule 9 (instruction -> mem_instr .)
+    VSUB            reduce using rule 9 (instruction -> mem_instr .)
+    VSMUL           reduce using rule 9 (instruction -> mem_instr .)
+    MOVI            reduce using rule 9 (instruction -> mem_instr .)
+    CMP             reduce using rule 9 (instruction -> mem_instr .)
+    VMOVV           reduce using rule 9 (instruction -> mem_instr .)
+    VMOVI           reduce using rule 9 (instruction -> mem_instr .)
+    VCMPLT          reduce using rule 9 (instruction -> mem_instr .)
+    VCMPRST         reduce using rule 9 (instruction -> mem_instr .)
+    VSTR            reduce using rule 9 (instruction -> mem_instr .)
+    VLDR            reduce using rule 9 (instruction -> mem_instr .)
+    SLDR            reduce using rule 9 (instruction -> mem_instr .)
+    VOUT            reduce using rule 9 (instruction -> mem_instr .)
+    JMP             reduce using rule 9 (instruction -> mem_instr .)
+    BGE             reduce using rule 9 (instruction -> mem_instr .)
+    BE              reduce using rule 9 (instruction -> mem_instr .)
+    $end            reduce using rule 9 (instruction -> mem_instr .)
+
+
+state 9
+
+    (10) instruction -> bra_instr .
+
+    LABEL           reduce using rule 10 (instruction -> bra_instr .)
+    NOP             reduce using rule 10 (instruction -> bra_instr .)
+    ADD             reduce using rule 10 (instruction -> bra_instr .)
+    SUB             reduce using rule 10 (instruction -> bra_instr .)
+    VADD            reduce using rule 10 (instruction -> bra_instr .)
+    VSUB            reduce using rule 10 (instruction -> bra_instr .)
+    VSMUL           reduce using rule 10 (instruction -> bra_instr .)
+    MOVI            reduce using rule 10 (instruction -> bra_instr .)
+    CMP             reduce using rule 10 (instruction -> bra_instr .)
+    VMOVV           reduce using rule 10 (instruction -> bra_instr .)
+    VMOVI           reduce using rule 10 (instruction -> bra_instr .)
+    VCMPLT          reduce using rule 10 (instruction -> bra_instr .)
+    VCMPRST         reduce using rule 10 (instruction -> bra_instr .)
+    VSTR            reduce using rule 10 (instruction -> bra_instr .)
+    VLDR            reduce using rule 10 (instruction -> bra_instr .)
+    SLDR            reduce using rule 10 (instruction -> bra_instr .)
+    VOUT            reduce using rule 10 (instruction -> bra_instr .)
+    JMP             reduce using rule 10 (instruction -> bra_instr .)
+    BGE             reduce using rule 10 (instruction -> bra_instr .)
+    BE              reduce using rule 10 (instruction -> bra_instr .)
+    $end            reduce using rule 10 (instruction -> bra_instr .)
+
+
+state 10
+
+    (5) label -> LABEL .
+
+    LABEL           reduce using rule 5 (label -> LABEL .)
+    NOP             reduce using rule 5 (label -> LABEL .)
+    ADD             reduce using rule 5 (label -> LABEL .)
+    SUB             reduce using rule 5 (label -> LABEL .)
+    VADD            reduce using rule 5 (label -> LABEL .)
+    VSUB            reduce using rule 5 (label -> LABEL .)
+    VSMUL           reduce using rule 5 (label -> LABEL .)
+    MOVI            reduce using rule 5 (label -> LABEL .)
+    CMP             reduce using rule 5 (label -> LABEL .)
+    VMOVV           reduce using rule 5 (label -> LABEL .)
+    VMOVI           reduce using rule 5 (label -> LABEL .)
+    VCMPLT          reduce using rule 5 (label -> LABEL .)
+    VCMPRST         reduce using rule 5 (label -> LABEL .)
+    VSTR            reduce using rule 5 (label -> LABEL .)
+    VLDR            reduce using rule 5 (label -> LABEL .)
+    SLDR            reduce using rule 5 (label -> LABEL .)
+    VOUT            reduce using rule 5 (label -> LABEL .)
+    JMP             reduce using rule 5 (label -> LABEL .)
+    BGE             reduce using rule 5 (label -> LABEL .)
+    BE              reduce using rule 5 (label -> LABEL .)
+    $end            reduce using rule 5 (label -> LABEL .)
+
+
+state 11
+
+    (19) spe_instr -> NOP .
+
+    LABEL           reduce using rule 19 (spe_instr -> NOP .)
+    NOP             reduce using rule 19 (spe_instr -> NOP .)
+    ADD             reduce using rule 19 (spe_instr -> NOP .)
+    SUB             reduce using rule 19 (spe_instr -> NOP .)
+    VADD            reduce using rule 19 (spe_instr -> NOP .)
+    VSUB            reduce using rule 19 (spe_instr -> NOP .)
+    VSMUL           reduce using rule 19 (spe_instr -> NOP .)
+    MOVI            reduce using rule 19 (spe_instr -> NOP .)
+    CMP             reduce using rule 19 (spe_instr -> NOP .)
+    VMOVV           reduce using rule 19 (spe_instr -> NOP .)
+    VMOVI           reduce using rule 19 (spe_instr -> NOP .)
+    VCMPLT          reduce using rule 19 (spe_instr -> NOP .)
+    VCMPRST         reduce using rule 19 (spe_instr -> NOP .)
+    VSTR            reduce using rule 19 (spe_instr -> NOP .)
+    VLDR            reduce using rule 19 (spe_instr -> NOP .)
+    SLDR            reduce using rule 19 (spe_instr -> NOP .)
+    VOUT            reduce using rule 19 (spe_instr -> NOP .)
+    JMP             reduce using rule 19 (spe_instr -> NOP .)
+    BGE             reduce using rule 19 (spe_instr -> NOP .)
+    BE              reduce using rule 19 (spe_instr -> NOP .)
+    $end            reduce using rule 19 (spe_instr -> NOP .)
+
+
+state 12
+
+    (11) ari_instr -> ari_instr_name . REG COMMA REG COMMA REG
+
+    REG             shift and go to state 36
+
+
+state 13
+
+    (12) reg_instr -> reg_instr_name . REG COMMA REG COMMA REG
+    (13) reg_instr -> reg_instr_name . REG COMMA REG
+    (14) reg_instr -> reg_instr_name . REG COMMA IMM
+    (15) reg_instr -> reg_instr_name .
+
+    REG             shift and go to state 37
+    LABEL           reduce using rule 15 (reg_instr -> reg_instr_name .)
+    NOP             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    ADD             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    SUB             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VADD            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VSUB            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VSMUL           reduce using rule 15 (reg_instr -> reg_instr_name .)
+    MOVI            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    CMP             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VMOVV           reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VMOVI           reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VCMPLT          reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VCMPRST         reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VSTR            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VLDR            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    SLDR            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    VOUT            reduce using rule 15 (reg_instr -> reg_instr_name .)
+    JMP             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    BGE             reduce using rule 15 (reg_instr -> reg_instr_name .)
+    BE              reduce using rule 15 (reg_instr -> reg_instr_name .)
+    $end            reduce using rule 15 (reg_instr -> reg_instr_name .)
+
+
+state 14
+
+    (16) mem_instr -> mem_instr_name . REG COMMA REG
+    (17) mem_instr -> mem_instr_name . REG
+
+    REG             shift and go to state 38
+
+
+state 15
+
+    (18) bra_instr -> bra_instr_name . LABEL
+
+    LABEL           shift and go to state 39
+
+
+state 16
+
+    (20) ari_instr_name -> ADD .
+
+    REG             reduce using rule 20 (ari_instr_name -> ADD .)
+
+
+state 17
+
+    (21) ari_instr_name -> SUB .
+
+    REG             reduce using rule 21 (ari_instr_name -> SUB .)
+
+
+state 18
+
+    (22) ari_instr_name -> VADD .
+
+    REG             reduce using rule 22 (ari_instr_name -> VADD .)
+
+
+state 19
+
+    (23) ari_instr_name -> VSUB .
+
+    REG             reduce using rule 23 (ari_instr_name -> VSUB .)
+
+
+state 20
+
+    (24) ari_instr_name -> VSMUL .
+
+    REG             reduce using rule 24 (ari_instr_name -> VSMUL .)
+
+
+state 21
+
+    (25) reg_instr_name -> MOVI .
+
+    REG             reduce using rule 25 (reg_instr_name -> MOVI .)
+    LABEL           reduce using rule 25 (reg_instr_name -> MOVI .)
+    NOP             reduce using rule 25 (reg_instr_name -> MOVI .)
+    ADD             reduce using rule 25 (reg_instr_name -> MOVI .)
+    SUB             reduce using rule 25 (reg_instr_name -> MOVI .)
+    VADD            reduce using rule 25 (reg_instr_name -> MOVI .)
+    VSUB            reduce using rule 25 (reg_instr_name -> MOVI .)
+    VSMUL           reduce using rule 25 (reg_instr_name -> MOVI .)
+    MOVI            reduce using rule 25 (reg_instr_name -> MOVI .)
+    CMP             reduce using rule 25 (reg_instr_name -> MOVI .)
+    VMOVV           reduce using rule 25 (reg_instr_name -> MOVI .)
+    VMOVI           reduce using rule 25 (reg_instr_name -> MOVI .)
+    VCMPLT          reduce using rule 25 (reg_instr_name -> MOVI .)
+    VCMPRST         reduce using rule 25 (reg_instr_name -> MOVI .)
+    VSTR            reduce using rule 25 (reg_instr_name -> MOVI .)
+    VLDR            reduce using rule 25 (reg_instr_name -> MOVI .)
+    SLDR            reduce using rule 25 (reg_instr_name -> MOVI .)
+    VOUT            reduce using rule 25 (reg_instr_name -> MOVI .)
+    JMP             reduce using rule 25 (reg_instr_name -> MOVI .)
+    BGE             reduce using rule 25 (reg_instr_name -> MOVI .)
+    BE              reduce using rule 25 (reg_instr_name -> MOVI .)
+    $end            reduce using rule 25 (reg_instr_name -> MOVI .)
+
+
+state 22
+
+    (26) reg_instr_name -> CMP .
+
+    REG             reduce using rule 26 (reg_instr_name -> CMP .)
+    LABEL           reduce using rule 26 (reg_instr_name -> CMP .)
+    NOP             reduce using rule 26 (reg_instr_name -> CMP .)
+    ADD             reduce using rule 26 (reg_instr_name -> CMP .)
+    SUB             reduce using rule 26 (reg_instr_name -> CMP .)
+    VADD            reduce using rule 26 (reg_instr_name -> CMP .)
+    VSUB            reduce using rule 26 (reg_instr_name -> CMP .)
+    VSMUL           reduce using rule 26 (reg_instr_name -> CMP .)
+    MOVI            reduce using rule 26 (reg_instr_name -> CMP .)
+    CMP             reduce using rule 26 (reg_instr_name -> CMP .)
+    VMOVV           reduce using rule 26 (reg_instr_name -> CMP .)
+    VMOVI           reduce using rule 26 (reg_instr_name -> CMP .)
+    VCMPLT          reduce using rule 26 (reg_instr_name -> CMP .)
+    VCMPRST         reduce using rule 26 (reg_instr_name -> CMP .)
+    VSTR            reduce using rule 26 (reg_instr_name -> CMP .)
+    VLDR            reduce using rule 26 (reg_instr_name -> CMP .)
+    SLDR            reduce using rule 26 (reg_instr_name -> CMP .)
+    VOUT            reduce using rule 26 (reg_instr_name -> CMP .)
+    JMP             reduce using rule 26 (reg_instr_name -> CMP .)
+    BGE             reduce using rule 26 (reg_instr_name -> CMP .)
+    BE              reduce using rule 26 (reg_instr_name -> CMP .)
+    $end            reduce using rule 26 (reg_instr_name -> CMP .)
+
+
+state 23
+
+    (27) reg_instr_name -> VMOVV .
+
+    REG             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    LABEL           reduce using rule 27 (reg_instr_name -> VMOVV .)
+    NOP             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    ADD             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    SUB             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VADD            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VSUB            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VSMUL           reduce using rule 27 (reg_instr_name -> VMOVV .)
+    MOVI            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    CMP             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VMOVV           reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VMOVI           reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VCMPLT          reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VCMPRST         reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VSTR            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VLDR            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    SLDR            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    VOUT            reduce using rule 27 (reg_instr_name -> VMOVV .)
+    JMP             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    BGE             reduce using rule 27 (reg_instr_name -> VMOVV .)
+    BE              reduce using rule 27 (reg_instr_name -> VMOVV .)
+    $end            reduce using rule 27 (reg_instr_name -> VMOVV .)
+
+
+state 24
+
+    (28) reg_instr_name -> VMOVI .
+
+    REG             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    LABEL           reduce using rule 28 (reg_instr_name -> VMOVI .)
+    NOP             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    ADD             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    SUB             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VADD            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VSUB            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VSMUL           reduce using rule 28 (reg_instr_name -> VMOVI .)
+    MOVI            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    CMP             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VMOVV           reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VMOVI           reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VCMPLT          reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VCMPRST         reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VSTR            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VLDR            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    SLDR            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    VOUT            reduce using rule 28 (reg_instr_name -> VMOVI .)
+    JMP             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    BGE             reduce using rule 28 (reg_instr_name -> VMOVI .)
+    BE              reduce using rule 28 (reg_instr_name -> VMOVI .)
+    $end            reduce using rule 28 (reg_instr_name -> VMOVI .)
+
+
+state 25
+
+    (29) reg_instr_name -> VCMPLT .
+
+    REG             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    LABEL           reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    NOP             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    ADD             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    SUB             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VADD            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VSUB            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VSMUL           reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    MOVI            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    CMP             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VMOVV           reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VMOVI           reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VCMPLT          reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VCMPRST         reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VSTR            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VLDR            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    SLDR            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    VOUT            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    JMP             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    BGE             reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    BE              reduce using rule 29 (reg_instr_name -> VCMPLT .)
+    $end            reduce using rule 29 (reg_instr_name -> VCMPLT .)
+
+
+state 26
+
+    (30) reg_instr_name -> VCMPRST .
+
+    REG             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    LABEL           reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    NOP             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    ADD             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    SUB             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VADD            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VSUB            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VSMUL           reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    MOVI            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    CMP             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VMOVV           reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VMOVI           reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VCMPLT          reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VCMPRST         reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VSTR            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VLDR            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    SLDR            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    VOUT            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    JMP             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    BGE             reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    BE              reduce using rule 30 (reg_instr_name -> VCMPRST .)
+    $end            reduce using rule 30 (reg_instr_name -> VCMPRST .)
+
+
+state 27
+
+    (31) mem_instr_name -> VSTR .
+
+    REG             reduce using rule 31 (mem_instr_name -> VSTR .)
+
+
+state 28
+
+    (32) mem_instr_name -> VLDR .
+
+    REG             reduce using rule 32 (mem_instr_name -> VLDR .)
+
+
+state 29
+
+    (33) mem_instr_name -> SLDR .
+
+    REG             reduce using rule 33 (mem_instr_name -> SLDR .)
+
+
+state 30
+
+    (34) mem_instr_name -> VOUT .
+
+    REG             reduce using rule 34 (mem_instr_name -> VOUT .)
+
+
+state 31
+
+    (35) bra_instr_name -> JMP .
+
+    LABEL           reduce using rule 35 (bra_instr_name -> JMP .)
+
+
+state 32
+
+    (36) bra_instr_name -> BGE .
+
+    LABEL           reduce using rule 36 (bra_instr_name -> BGE .)
+
+
+state 33
+
+    (37) bra_instr_name -> BE .
+
+    LABEL           reduce using rule 37 (bra_instr_name -> BE .)
+
+
+state 34
+
+    (2) body -> instruction body .
+
+    $end            reduce using rule 2 (body -> instruction body .)
+
+
+state 35
+
+    (3) body -> label body .
+
+    $end            reduce using rule 3 (body -> label body .)
+
+
+state 36
+
+    (11) ari_instr -> ari_instr_name REG . COMMA REG COMMA REG
+
+    COMMA           shift and go to state 40
+
+
+state 37
+
+    (12) reg_instr -> reg_instr_name REG . COMMA REG COMMA REG
+    (13) reg_instr -> reg_instr_name REG . COMMA REG
+    (14) reg_instr -> reg_instr_name REG . COMMA IMM
+
+    COMMA           shift and go to state 41
+
+
+state 38
+
+    (16) mem_instr -> mem_instr_name REG . COMMA REG
+    (17) mem_instr -> mem_instr_name REG .
+
+    COMMA           shift and go to state 42
+    LABEL           reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    NOP             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    ADD             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    SUB             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VADD            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VSUB            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VSMUL           reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    MOVI            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    CMP             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VMOVV           reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VMOVI           reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VCMPLT          reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VCMPRST         reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VSTR            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VLDR            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    SLDR            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    VOUT            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    JMP             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    BGE             reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    BE              reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+    $end            reduce using rule 17 (mem_instr -> mem_instr_name REG .)
+
+
+state 39
+
+    (18) bra_instr -> bra_instr_name LABEL .
+
+    LABEL           reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    NOP             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    ADD             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    SUB             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VADD            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VSUB            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VSMUL           reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    MOVI            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    CMP             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VMOVV           reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VMOVI           reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VCMPLT          reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VCMPRST         reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VSTR            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VLDR            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    SLDR            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    VOUT            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    JMP             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    BGE             reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    BE              reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+    $end            reduce using rule 18 (bra_instr -> bra_instr_name LABEL .)
+
+
+state 40
+
+    (11) ari_instr -> ari_instr_name REG COMMA . REG COMMA REG
+
+    REG             shift and go to state 43
+
+
+state 41
+
+    (12) reg_instr -> reg_instr_name REG COMMA . REG COMMA REG
+    (13) reg_instr -> reg_instr_name REG COMMA . REG
+    (14) reg_instr -> reg_instr_name REG COMMA . IMM
+
+    REG             shift and go to state 44
+    IMM             shift and go to state 45
+
+
+state 42
+
+    (16) mem_instr -> mem_instr_name REG COMMA . REG
+
+    REG             shift and go to state 46
+
+
+state 43
+
+    (11) ari_instr -> ari_instr_name REG COMMA REG . COMMA REG
+
+    COMMA           shift and go to state 47
+
+
+state 44
+
+    (12) reg_instr -> reg_instr_name REG COMMA REG . COMMA REG
+    (13) reg_instr -> reg_instr_name REG COMMA REG .
+
+    COMMA           shift and go to state 48
+    LABEL           reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    NOP             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    ADD             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    SUB             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VADD            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VSUB            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VSMUL           reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    MOVI            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    CMP             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VMOVV           reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VMOVI           reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VCMPLT          reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VCMPRST         reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VSTR            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VLDR            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    SLDR            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    VOUT            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    JMP             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    BGE             reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    BE              reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+    $end            reduce using rule 13 (reg_instr -> reg_instr_name REG COMMA REG .)
+
+
+state 45
+
+    (14) reg_instr -> reg_instr_name REG COMMA IMM .
+
+    LABEL           reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    NOP             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    ADD             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    SUB             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VADD            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VSUB            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VSMUL           reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    MOVI            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    CMP             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VMOVV           reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VMOVI           reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VCMPLT          reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VCMPRST         reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VSTR            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VLDR            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    SLDR            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    VOUT            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    JMP             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    BGE             reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    BE              reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+    $end            reduce using rule 14 (reg_instr -> reg_instr_name REG COMMA IMM .)
+
+
+state 46
+
+    (16) mem_instr -> mem_instr_name REG COMMA REG .
+
+    LABEL           reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    NOP             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    ADD             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    SUB             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VADD            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VSUB            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VSMUL           reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    MOVI            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    CMP             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VMOVV           reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VMOVI           reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VCMPLT          reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VCMPRST         reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VSTR            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VLDR            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    SLDR            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    VOUT            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    JMP             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    BGE             reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    BE              reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+    $end            reduce using rule 16 (mem_instr -> mem_instr_name REG COMMA REG .)
+
+
+state 47
+
+    (11) ari_instr -> ari_instr_name REG COMMA REG COMMA . REG
+
+    REG             shift and go to state 49
+
+
+state 48
+
+    (12) reg_instr -> reg_instr_name REG COMMA REG COMMA . REG
+
+    REG             shift and go to state 50
+
+
+state 49
+
+    (11) ari_instr -> ari_instr_name REG COMMA REG COMMA REG .
+
+    LABEL           reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    NOP             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    ADD             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    SUB             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VADD            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VSUB            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VSMUL           reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    MOVI            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    CMP             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VMOVV           reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VMOVI           reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VCMPLT          reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VCMPRST         reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VSTR            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VLDR            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    SLDR            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    VOUT            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    JMP             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    BGE             reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    BE              reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+    $end            reduce using rule 11 (ari_instr -> ari_instr_name REG COMMA REG COMMA REG .)
+
+
+state 50
+
+    (12) reg_instr -> reg_instr_name REG COMMA REG COMMA REG .
+
+    LABEL           reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    NOP             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    ADD             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    SUB             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VADD            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VSUB            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VSMUL           reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    MOVI            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    CMP             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VMOVV           reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VMOVI           reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VCMPLT          reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VCMPRST         reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VSTR            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VLDR            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    SLDR            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    VOUT            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    JMP             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    BGE             reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    BE              reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+    $end            reduce using rule 12 (reg_instr -> reg_instr_name REG COMMA REG COMMA REG .)
+

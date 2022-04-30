@@ -5,3 +5,7 @@ microarquitectura/simulation
 *.bak
 *.rpt
 microarquitectura/outFile.txt
+
+compiler/.idea/
+
+compiler/compiler/__pycache__/

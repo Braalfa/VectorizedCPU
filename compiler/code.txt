@@ -1,0 +1,27 @@
+label1
+    NOP
+    VADD    V1, V2, V3 ; comment
+    VSUB    V1, V2, V3
+    VSMUL   V1, V2, V3
+    ADD     R1, R2, R3
+    SUB     R1, R2, R3
+    VMOVV   V1, V2, V3
+    VMOVV   V1, V4
+    VMOVI   V2, 2021
+    MOVI    R1, 1001
+    CMP     R2, R3
+    VCMPLT  V3, V5
+    VCMPRST
+    VSTR    R2, V4
+    VLDR    V1, R2
+    SLDR    R1, R2
+    VOUT    R3
+    JMP     label2
+    BGE     label3
+    BE      label3
+
+label2
+    NOP
+
+label3
+    ADD     R1, R2, R3
