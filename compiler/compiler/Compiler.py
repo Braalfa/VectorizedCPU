@@ -131,10 +131,16 @@ def analyze_instr_reg(instr):
         bin_code += three_0s
         bin_code += three_0s
         bin_code += nineteen_0s
-    elif isinstance(instr[2], int):
+    elif isinstance(instr[2], int) or instr[2][0] == "b":
         # Register instruction is REG IMM
         # Get data
-        imm = shift_num(str(bin(instr[2]))[2:], 19)
+        imm = instr[2]
+        if not isinstance(instr[2], int):
+            # Binary inmediate
+            imm = int(imm[1:], 2)
+            print("int binary inmediate is " + str(imm))
+
+        imm = shift_num(bin(imm)[2:], 19)
         r1 = Lang.registers.get(str(instr[1]))
 
         print("imm is " + imm)

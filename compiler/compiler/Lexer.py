@@ -5,6 +5,7 @@ tokens = [
     'COMMA',
     'REG',
     'IMM',
+    'BIMM',
     'LABEL',
     'COMMENT'
 ]
@@ -49,6 +50,12 @@ def t_REG(t):
     if t.value.upper() in reserved:
         t.value = t.value.upper()
         t.type = t.value
+    return t
+
+
+# Binary immediate value token
+def t_BIMM(t):
+    r'[b][0-9]+'
     return t
 
 

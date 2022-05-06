@@ -34,7 +34,6 @@ def p_label(p):
     '''
     label : LABEL
     '''
-
     if p[1] != '$':
         p[0] = (p[1])
         result.append(p[0])
@@ -72,6 +71,7 @@ def p_reg_instr(p):
     reg_instr : reg_instr_name REG COMMA REG COMMA REG
               | reg_instr_name REG COMMA REG
               | reg_instr_name REG COMMA IMM
+              | reg_instr_name REG COMMA BIMM
               | reg_instr_name
     '''
     p_length = len(p)

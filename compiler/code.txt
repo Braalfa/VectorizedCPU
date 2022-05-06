@@ -24,5 +24,7 @@ label2
     NOP
 
 label3
-    ADD     R1, R2, R3
+    ADD     R7, R2, R3
     VMOVV   V4, V4, V1
+    VMOVI   V3, b1010
+    MOVI    V7, b0101
