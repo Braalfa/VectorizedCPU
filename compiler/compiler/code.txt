@@ -31,9 +31,9 @@ _sepia
     VADD V3, V3, V6; Se multiplican los vectores y se guardan en ResRojo
 
     ;Pedazo de codigo para la mascara
-    VMOVI V7, b0111111110000000000; Vector 255 en binario
-    VMOVI V1, 0; Se resetean los valores del vector
-    VCMPLT V3, V1;Vector mascara para Red
+    VMOVI V7, b111111110000000000; Vector 255 en binario
+    VMOVI V6, 0; Se resetean los valores del vector
+    VCMPLT V3, V6;Vector mascara para Red
     VMOVV V3, V3, V7; Se usa el comparador con la mascara, ya sea de V3 o de V6
     VCMPRST
 
@@ -55,9 +55,9 @@ _sepia
     VADD V4, V4, V6; Se multiplican los vectores y se guardan en ResVerde
 
     ;Pedazo de codigo para la mascara
-    VMOVI V7, b0111111110000000000; Vector 255 en binario
-    VMOVI V1, 0; Se resetean los valores del vector
-    VCMPLT V4, V1;Vector mascara para Red
+    VMOVI V7, b111111110000000000; Vector 255 en binario
+    VMOVI V6, 0; Se resetean los valores del vector
+    VCMPLT V4, V6;Vector mascara para Red
     VMOVV V4, V4, V7; Se usa el comparador con la mascara, ya sea de V3 o de V6
     VCMPRST
 
@@ -80,13 +80,14 @@ _sepia
     VADD V5, V5, V6; Se multiplican los vectores y se guardan en ResAzul
 
     ;Pedazo de codigo para la mascara
-    VMOVI V7, b0111111110000000000; Vector 255 en binario
-    VMOVI V1, 0; Se resetean los valores del vector
-    VCMPLT V5, V1;Vector mascara para Red
+    VMOVI V7, b111111110000000000; Vector 255 en binario
+    VMOVI V6, 0; Se resetean los valores del vector
+    VCMPLT V5, V6;Vector mascara para Red
     VMOVV V5, V5, V7; Se usa el comparador con la mascara, ya sea de V3 o de V6
     VCMPRST
 
     JMP _filterReturn
+
 
 
 _grey
