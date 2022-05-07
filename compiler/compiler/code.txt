@@ -1,0 +1,58 @@
+_grey
+    VMOVI V0, 0; Se inicia el vector de entrada rojo ;Lineas para limpiar registros
+    VMOVI V1, 0; Se inicializa el vector de entrada verde
+    VMOVI V2, 0; Se inicializa el vector de entrada azul 
+    VMOVI V3, 0; Se inicializa el vector de resultados rojo
+    VMOVI V4, 0; Se inicializa el vector de resultados verde
+    VMOVI V5, 0; Se inicializa el vector de resultados azul
+    
+    MOVI R1, b1000000000000000000 
+    MOVI R2, 0 ;ESC_INDEX
+    MOVI R0, 1;
+
+    
+    MOVI R4, 0; Escalar temporal 1
+    MOVI R5, 0; Registro escalar de seleccion
+    MOVI R6, 0; Registro escalar index
+    
+    VLDR V0, R2; se hace un load de R2 a V0
+    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2
+
+    VLDR V1, R2; se hace un load de R2 a V0
+    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2 
+
+    VLDR V2, R2; se hace un load de R2 a V0
+    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2
+    
+    
+
+    MOVI R0, b0000000000100110011; Se mueve el numero al registro
+    VSMUL V6, V0, R0; Se multiplica el escalar por el vector de entrada rojo
+    VADD V3, V3, V6; Se multiplican los vectores y se guardan en ResRojo
+
+    MOVI R0, b0000000001001011100; Se mueve el numero al registro
+    VSMUL V6, V1, R0; Se multiplica el escalar por el vector de entrada rojo
+    VADD V3, V3, V6; Se multiplican los vectores y se guardan en ResRojo
+
+    MOVI R0, b0000000000001110000; Se mueve el numero al registro
+    VSMUL V6, V2, R0; Se multiplica el escalar por el vector de entrada rojo
+    VADD V3, V3, V6; Se multiplican los vectores y se guardan en ResRojo
+
+    VMOVV V4, V3; Se mueve el resultado de red al vector green
+    VMOVV V5, V3; Se mueve el resultado de red al vector blue
+    
+    MOVI R0, 0;
+    MOVI R1, 0;
+    MOVI R2, 0;
+    
+    VSTR R0, V3 ;Se hace un store
+    VOUT R0;
+   	 
+    VSTR R1, V4 ;Se hace un store
+    VOUT R1;
+    
+    VSTR R2, V5 ;Se hace un store
+    VOUT R2;
