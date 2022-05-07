@@ -1,5 +1,5 @@
 MOVI R0, 0; Escalar temporal 1
-MOVI R1, 1024; Registro escalar de seleccion
+MOVI R1, 1; Registro escalar de seleccion
 MOVI R2, 0; Registro escalar index
 
 VMOVI V0, 0; Se inicia el vector de entrada rojo
@@ -12,6 +12,7 @@ VMOVI V5, 0; Se inicializa el vector de resultados azul
 
 VMOVI V6, 0; Se inicializa el vector temporal de 1
 VMOVI V7, 0; Vector Mascara
+JMP _declarar
 
 _sepia
     ;Codigo para el output rojo
@@ -86,7 +87,7 @@ _sepia
     VCMPLT V5, V1;Vector mascara para Red
     VMOVV V5, V5, V7; Se usa el comparador con la mascara, ya sea de V3 o de V6
 
-    JMP _declarar
+    JMP _filterReturn
 
 
 _grey
@@ -112,7 +113,7 @@ _grey
     VMOVV V4, V3; Se mueve el resultado de red al vector green
     VMOVV V5, V3; Se mueve el resultado de red al vector blue
 
-    JMP _declarar
+    JMP _filterReturn
 
 _negative
     VMOVI V3, b1111111100000000000 ; Se rellena todo el vector con el valor indicado
@@ -124,7 +125,7 @@ _negative
     VMOVI V5, b1111111100000000000 ; Se rellena todo el vector con el valor indicado
     VSUB V5, V5, V2; Se resta vector de resultado azul menos entrada azul y se guarda en resultado azul
     
-    JMP _declarar
+    JMP _filterReturn
 
 _declarar
     MOVI R1, b1000000000000000000 
@@ -139,19 +140,19 @@ _whileTrue
     MOVI R4, b1100001101010000000 ; 50000 a un registro temporal
     ADD R0, R4, R5 ; Se anade 450*400 = 180 000 al registro ESC_TEMP_1
     
-    CMP R2, R0 ; para ver si se hace el branch
+    CMP R2 R0 ; para ver si se hace el branch
     BGE _end  ; Se manda a terminar el programa
     
-    VLDR V0, R2; se hace un load de R2 a V0
-    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    VLDR V0 R2; se hace un load de R2 a V0
+    MOVI R2 1024; Se mueve el escalar temporal a 1
     ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2
 
-    VLDR V1, R2; se hace un load de R2 a V0
-    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    VLDR V1 R2; se hace un load de R2 a V0
+    MOVI R2 1024; Se mueve el escalar temporal a 1
     ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2 
 
-    VLDR V2, R2; se hace un load de R2 a V0
-    MOVI R2, 1024; Se mueve el escalar temporal a 1
+    VLDR V2 R2; se hace un load de R2 a V0
+    MOVI R2 1024; Se mueve el escalar temporal a 1
     ADD R2, R2, R0; Se suma R2, R0 y se guarda en R2
 
     ;Seccion para seleccionar el 
@@ -165,6 +166,8 @@ _whileTrue
     BE _grey   ; Modo Grey
     CMP R1, R7 ; Se compara
     BE _negative ; Modo negativo
+
+_filterReturn
 
     MOVI R0, b1100000000000000000 ;Se carga 3 en binario
     SUB R2, R2, R0 ;Se le resta 3 al index
@@ -182,7 +185,4 @@ _whileTrue
     JMP _whileTrue ;Se mantiene el ciclo hasta que el primer condicional se cumpla
 
 _end
-    MOVI R0, 0
-
-
-    
+    MOVI R0  0
