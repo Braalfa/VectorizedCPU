@@ -13,9 +13,10 @@
 module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 8, parameter VECTOR_REGNUM = 8, 
-					parameter REG_ADDRESS_WIDTH = 3, parameter OPCODE_WIDTH = 5)
+					parameter REG_ADDRESS_WIDTH = 3, parameter OPCODE_WIDTH = 5,
+					parameter OUTPUT_WIDTH = 8)
 	(input logic clock, reset, 	
-	output logic [VECTOR_SIZE*DATA_WIDTH-1:0] out,	output logic outFlag);
+	output logic [VECTOR_SIZE*OUTPUT_WIDTH-1:0] out,	output logic outFlag);
 	
 	 logic [OPCODE_WIDTH-1:0] opcodeD;
 	 logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
@@ -303,29 +304,9 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	assign writeEnableVectorD = writeEnableVectorWBWB;
 	assign writeEnableScalarD = writeEnableScalarWBWB;
 	assign forwardWB = outputWB;	 
-	assign out = memoryOutputWB;
+	assign out = {memoryOutputWB[112:105], memoryOutputWB[93:86], memoryOutputWB[74:67], memoryOutputWB[55:48], memoryOutputWB[36:29], memoryOutputWB[17:10]};
 	assign outFlag = outputFlagMWB; 
 	 
-	always @(posedge clock) begin
-		$display("##FETCH##");
-		$display("NewPCF %d ; TakeBranch: %b ; Enable/StallF: %b ; InstructionF : %b", NewPCF, takeBranchE, stallF, instructionF);
-		$display("##HAZARDS##");
-		$display("data1ScalarForwardSelectorE %b ; data2ScalarForwardSelectorE %b ; data1VectorForwardSelectorE: %b ; data2VectorForwardSelectorE: %b ; stallF: %b, stallD: %b, flushE: %b, flushD : %b", 
-		data1ScalarForwardSelectorE, data2ScalarForwardSelectorE, data1VectorForwardSelectorE, data2VectorForwardSelectorE, stallF, stallD, flushE, flushD);
-		$display("##DECODE##");
-		$display("writeEnableScalarD %b,  writeEnableVectorD %b, 	 writeAddressD %b,	 writeScalarDataD %b,	 writeVectorDataD %b,	 instructionD %b,	 reg1ScalarContentD %b, reg2ScalarContentD %b, 	 inmediateD %b,	 reg1VectorContentD %b, 	 reg2VectorContentD %b,	 regDestinationAddressWBD %b, 	 reg1AddressD %b, 	 reg2AddressD %b,	 opcode %b , writeToMaskVectorDD %b, resetMaskVectorDD %b,	 maskVectorInD %b, maskVectorOutD %b",
-		writeEnableScalarD,  writeEnableVectorD , 	 writeAddressD ,	 writeScalarDataD ,	 writeVectorDataD ,	 instructionD ,	 reg1ScalarContentD , reg2ScalarContentD, 	 inmediateD,	 reg1VectorContentD, 	 reg2VectorContentD ,	 regDestinationAddressWBD , 	 reg1AddressD , 	 reg2AddressD ,	 opcodeD, writeToMaskVectorDD, resetMaskVectorDD,	 maskVectorInD, maskVectorOutD);
-		$display("##Control Unit##");
-		$display("opcodeD %b, useScalarAluED %b , isScalarOutputED %b, isScalarReg1ED %b, isScalarReg2ED %b,	resultSelectorWBD %b,	   writeEnableScalarWBD %b,	   writeEnableVectorWBD %b, 	   writeToMemoryEnableMD %b, useInmediateED %b,		   aluControlED %b,	   outFlagMD %b, resetMaskVectorDD %b, writeToMaskVectorED %b",
-		opcodeD,	 useScalarAluED, isScalarOutputED,isScalarReg1ED, isScalarReg2ED,  resultSelectorWBD,	   writeEnableScalarWBD,	   writeEnableVectorWBD, 	   writeToMemoryEnableMD, useInmediateED,	   aluControlED,	   outFlagMD,  resetMaskVectorDD, writeToMaskVectorED);
-		$display("##EXECUTE##");
-		$display("reg1ScalarContentE %b, reg2ScalarContentE %b, 	 inmediateE %b,	 reg1VectorContentE %b, 	 reg2VectorContentE %b,	 aluControlEE %b,	 useInmediateEE %b,	 useScalarAluEE %b , isScalarReg2EE %b,	 forwardWB %b, 	 forwardM %b,	 data1ScalarForwardSelectorE %b,	 data2ScalarForwardSelectorE %b,	 data1VectorForwardSelectorE %b,	 data2VectorForwardSelectorE %b ,	 executeOuputE %b,	 dataToWriteE %b,	 N1 %b, 	 Z1 %b, 	 V1 %b, 	 C1 %b , maskVectorOutE %b, outVectorComparisonE %b", 
-	   reg1ScalarContentE, reg2ScalarContentE, 	 inmediateE,	 reg1VectorContentE, 	 reg2VectorContentE,	 aluControlEE,	 useInmediateEE,	useScalarAluEE, isScalarReg2EE,	 forwardWB, 	 forwardM,	 data1ScalarForwardSelectorE,	 data2ScalarForwardSelectorE,	 data1VectorForwardSelectorE,	 data2VectorForwardSelectorE,	 executeOuputE,	 dataToWriteE,	 N1, 	 Z1, 	 V1, 	 C1, maskVectorOutE, outVectorComparisonE);	
-		$display("##MEMORY##");
-		$display("writeEnable %b readAddress %b writeAddress %b inputData %b outputData %b",
-		writeToMemoryEnableMM, executeOuputM[DATA_WIDTH-1:0], executeOuputM[DATA_WIDTH-1:0], dataToWriteM, memoryOutputM);
-		$display("-----------------------------------------------------------------------------------------------------------");
-	end	
 	 
 endmodule
 
