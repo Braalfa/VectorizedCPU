@@ -15,7 +15,7 @@ def post_process_image(file_txt, width=6, height=6, output_file=""):
     g_vals_read = []
     b_vals_read = []
 
-    WIDTH = 19
+    WIDTH = 8
     i = 0
     while i + WIDTH*6 < len(txt):
         for j in range(6):
@@ -28,9 +28,9 @@ def post_process_image(file_txt, width=6, height=6, output_file=""):
             b_vals_read.append(txt[i:i+WIDTH])
             i += WIDTH
 
-    r_vals_read = [min(int(x, base=2)/2**10, 255) for x in r_vals_read]
-    g_vals_read = [min(int(x, base=2)/2**10, 255) for x in g_vals_read]
-    b_vals_read = [min(int(x, base=2)/2**10, 255) for x in b_vals_read]
+    r_vals_read = [min(int(x, base=2), 255) for x in r_vals_read]
+    g_vals_read = [min(int(x, base=2), 255) for x in g_vals_read]
+    b_vals_read = [min(int(x, base=2), 255) for x in b_vals_read]
 
     # print(r_vals_read, g_vals_read, b_vals_read)
 
@@ -56,5 +56,5 @@ def post_process_image(file_txt, width=6, height=6, output_file=""):
     image2.save(output_file)
 
 if (__name__ == "__main__"):
-    post_process_image("assets/message(17).txt", width=100,
+    post_process_image("../../microarquitectura/outFile.txt", width=100,
                        height=100, output_file="assets/mem_salida.jpg")

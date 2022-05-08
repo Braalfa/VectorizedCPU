@@ -63,7 +63,7 @@ def tree_to_bin(tree):
 
 # Writes instructions in bin form on an output txt file
 def write_instr():
-    with open("./output.txt", "w") as file:
+    with open("../../microarquitectura/Fetch/compiledInstructions.txt", "w") as file:
         for instr in bin_instr:
             file.write("%s\n" % instr)
 

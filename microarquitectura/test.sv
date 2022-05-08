@@ -9,11 +9,11 @@ module test();
 	parameter VECTOR_REGNUM = 8;
 	parameter REG_ADDRESS_WIDTH = 3; 
 	parameter OPCODE_WIDTH = 5;
-	
+	parameter OUTPUT_WIDTH = 8;
 	logic reset;
 	logic clock;
 	logic outFlag;
-	logic [VECTOR_SIZE*DATA_WIDTH-1:0] out;
+	logic [VECTOR_SIZE*OUTPUT_WIDTH-1:0] out;
 	
 	
 	logic isScalarOutputED, isScalarReg1ED, isScalarReg2ED,
@@ -90,17 +90,17 @@ module test();
 		#10;
 		
 		i = 0;
-		while(i<150) begin
+		while(i<200000) begin
 		   i += 1;
 			clock = 1;
-			#10	
+			#1	
 		
 			if(outFlag) begin 
 				$fdisplay(OutFile,"%b", out);
 			end
 				
 			clock = 0;
-			#10;
+			#1;
 		end
 	end
 	
