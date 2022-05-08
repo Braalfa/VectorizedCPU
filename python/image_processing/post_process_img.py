@@ -56,5 +56,5 @@ def post_process_image(file_txt, width=6, height=6, output_file=""):
     image2.save(output_file)
 
 if (__name__ == "__main__"):
-    post_process_image("../../microarquitectura/outFile.txt", width=100,
+    post_process_image("../../microarquitectura/outFile.img", width=100,
                        height=100, output_file="assets/mem_salida.jpg")
