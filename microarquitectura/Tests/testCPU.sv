@@ -1,5 +1,5 @@
 `timescale 1 ns / 1 ns
-module test();
+module testCPU();
 	
 	parameter DATA_WIDTH = 19; 
 	parameter INSTRUCTION_WIDTH = 30;
@@ -23,7 +23,7 @@ module test();
 	
 	initial begin	
 	
-		OutFile = $fopen("C://Users//Brayan//Documents//I Sem 2022//Arqui//Proyecto 2//proyecto2//microarquitectura//outfile.img");
+		OutFile = $fopen("C://Users//Alejandro//Documents//Development//VectorizedCPU//microarquitectura//outfile.img");
 		reset = 1;
 		clock = 0;
 		#10;
