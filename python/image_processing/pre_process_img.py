@@ -32,12 +32,12 @@ def pre_process_image(image, output_path="output.txt"):
 
     txt = ""
     for r_row, g_row, b_row in zip(r_vals_reshaped, g_vals_reshaped, b_vals_reshaped):
-        txt += ("".join(["{:09b}".format(x)+"0"*10 for x in r_row]))+"\n"
-        txt += ("".join(["{:09b}".format(x)+"0"*10 for x in g_row]))+"\n"
-        txt += ("".join(["{:09b}".format(x)+"0"*10 for x in b_row]))+"\n"
+        txt += ("".join(["{:08b}".format(x) for x in r_row]))+"\n"
+        txt += ("".join(["{:08b}".format(x) for x in g_row]))+"\n"
+        txt += ("".join(["{:08b}".format(x) for x in b_row]))+"\n"
     # print(txt)
 
-    txt += "1"*19*6
+    txt += "1"*8*6
 
     f = open(output_path, "w+")
     f.write(txt)
