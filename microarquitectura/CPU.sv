@@ -10,7 +10,9 @@
 	OPCODE_WIDTH: Ancho del codigo de OP en la instruccion
 */
 
-module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
+module CPU #(parameter DATA_WIDTH = 19, 
+					parameter DATA_INTEGER_WIDTH = 8,
+					parameter INSTRUCTION_WIDTH = 30,
 					parameter VECTOR_SIZE = 6, parameter PC_WIDTH = 32,
 					parameter SCALAR_REGNUM = 8, parameter VECTOR_REGNUM = 8, 
 					parameter REG_ADDRESS_WIDTH = 3, parameter OPCODE_WIDTH = 5,
@@ -271,7 +273,9 @@ module CPU #(parameter DATA_WIDTH = 19, parameter INSTRUCTION_WIDTH = 30,
 	
 	
 
-	memory #(.DATA_WIDTH(DATA_WIDTH*VECTOR_SIZE), .ADDRESS_WIDTH(DATA_WIDTH)) Memory(
+	memory #(.DATA_INTEGER_WIDTH(DATA_INTEGER_WIDTH*VECTOR_SIZE), 
+				.DATA_WIDTH(DATA_WIDTH*VECTOR_SIZE),
+				.ADDRESS_WIDTH(DATA_WIDTH)) Memory(
 			  .writeEnable(writeToMemoryEnableMM), .clk(clock),
 			  .readAddress(executeOuputM[DATA_WIDTH-1:0]), .writeAddress(executeOuputM[DATA_WIDTH-1:0]),
 			  .inputData(dataToWriteM),
