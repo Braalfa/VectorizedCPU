@@ -45,4 +45,4 @@ def pre_process_image(image, output_path="output.txt"):
 
 #pre_process_image("ex1.jpg", output_path="mem_aux.txt")
 if (__name__ == "__main__"):
-    pre_process_image("assets/test/ex1_2.jpg", output_path="../../microarquitectura/Memory/data.txt")
+    pre_process_image("assets/test/ex1_256.jpg", output_path="../../microarquitectura/Memory/data.txt")

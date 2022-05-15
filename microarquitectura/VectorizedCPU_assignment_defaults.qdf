@@ -806,3 +806,4 @@ set_global_assignment -name MERGE_EQUIVALENT_INPUTS On -section_id ? -entity ?
 set_global_assignment -name MERGE_EQUIVALENT_BIDIRS On -section_id ? -entity ?
 set_global_assignment -name ABSORB_PATHS_FROM_OUTPUTS_TO_INPUTS On -section_id ? -entity ?
 set_global_assignment -name PARTITION_ENABLE_STRICT_PRESERVATION Off -section_id ? -entity ?
+set_global_assignment -name MAX_NUMBER_OF_REGISTERS_FROM_UNINFERRED_RAMS -1

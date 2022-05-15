@@ -26,7 +26,7 @@ module memory #(parameter MEM_SIZE = 35000,
 	logic [DATA_INTEGER_WIDTH-1:0] tempOutputData;
 	
 	initial
-		$readmemb("C://Users//Brayan//Documents//I Sem 2022//Arqui//Proyecto 2//proyecto2//microarquitectura//Memory//data.txt", RAM);
+		$readmemb("C://Users//Alejandro//Documents//Development//VectorizedCPU//microarquitectura//Memory//data.txt", RAM);
 	
 	always_comb begin
 		tempOutputData = RAM[readAddress];

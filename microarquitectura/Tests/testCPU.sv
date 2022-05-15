@@ -34,7 +34,7 @@ module testCPU();
 		#10;
 		
 		i = 0;
-		while(i<200000) begin
+		while(i<1200000) begin
 		   i += 1;
 			clock = 1;
 			#1	
