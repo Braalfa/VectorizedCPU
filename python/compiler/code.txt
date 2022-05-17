@@ -166,18 +166,24 @@ _filterReturn
     MOVI R0, 3 ;Se carga 3 en binario
     SUB R2, R2, R0 ;Se le resta 3 al index
 
-    VSTR R2, V3 ;Se hace un store
-    VOUT R2;
+    MOVI R7, 4800;
+    ADD R7, R7, R2 ;Se suma el valor de r2 y se guarda en R7 para otra salida
+    VSTR R7, V3 ;Se hace un store
+    VOUT R7;
     MOVI R0, 1;
     ADD R2, R2, R0
 
-    VSTR R2, V4 ;Se hace un store
-    VOUT R2;
+    MOVI R7, 4800;
+    ADD R7, R7, R2 ;Se suma el valor de r2 y se guarda en R7 para otra salida
+    VSTR R7, V4 ;Se hace un store
+    VOUT R7;
     MOVI R0, 1;
     ADD R2, R2, R0
 
-    VSTR R2, V5 ;Se hace un store
-    VOUT R2;
+    MOVI R7, 4800;
+    ADD R7, R7, R2;
+    VSTR R7, V5 ;Se hace un store
+    VOUT R7;
     MOVI R0, 1;
     ADD R2, R2, R0
 

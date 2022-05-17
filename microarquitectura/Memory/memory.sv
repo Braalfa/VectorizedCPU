@@ -12,7 +12,7 @@
 	outputs:
 	- 
 */
-module memory #(parameter MEM_SIZE = 35000, 
+module memory #(parameter MEM_SIZE = 10000, 
 					 parameter DATA_INTEGER_WIDTH = 8,
 					 parameter DATA_WIDTH = 32,
 					 parameter ADDRESS_WIDTH = 32 )(
