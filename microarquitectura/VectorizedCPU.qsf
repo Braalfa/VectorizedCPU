@@ -42,7 +42,7 @@ set_global_assignment -name DEVICE 5CSEMA5F31C6
 set_global_assignment -name TOP_LEVEL_ENTITY CPU
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 21.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "12:17:15  APRIL 15, 2022"
-set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "19.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name BOARD "DE1-SoC Board"
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
@@ -57,7 +57,7 @@ set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
-set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH testAluV -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH testCPU -section_id eda_simulation
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
@@ -109,16 +109,67 @@ set_global_assignment -name SYSTEMVERILOG_FILE Tests/testCondUnit.sv
 set_global_assignment -name EDA_TEST_BENCH_NAME testCPU -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id testCPU
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME testCPU -section_id testCPU
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name EDA_TEST_BENCH_NAME testALU -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id testALU
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME testALU -section_id testALU
 set_global_assignment -name SYSTEMVERILOG_FILE Tests/testAluV.sv
+set_global_assignment -name EDA_TEST_BENCH_NAME testAluV -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id testAluV
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME testAluV -section_id testAluV
 set_global_assignment -name EDA_TEST_BENCH_FILE Tests/testControlUnit.sv -section_id testControlUnit
 set_global_assignment -name EDA_TEST_BENCH_FILE Tests/testCondUnit.sv -section_id testCondUnit
 set_global_assignment -name EDA_TEST_BENCH_FILE Tests/testCPU.sv -section_id testCPU
 set_global_assignment -name EDA_TEST_BENCH_FILE Tests/testALU.sv -section_id testALU
-set_global_assignment -name EDA_TEST_BENCH_NAME testAluV -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id testAluV
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME testAluV -section_id testAluV
 set_global_assignment -name EDA_TEST_BENCH_FILE Tests/testAluV.sv -section_id testAluV
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_location_assignment PIN_AC18 -to out[47]
+set_location_assignment PIN_Y17 -to out[46]
+set_location_assignment PIN_AD17 -to out[45]
+set_location_assignment PIN_Y18 -to out[44]
+set_location_assignment PIN_AK16 -to out[43]
+set_location_assignment PIN_AK18 -to out[42]
+set_location_assignment PIN_AK19 -to out[41]
+set_location_assignment PIN_AJ19 -to out[40]
+set_location_assignment PIN_AJ17 -to out[39]
+set_location_assignment PIN_AJ16 -to out[38]
+set_location_assignment PIN_AH18 -to out[37]
+set_location_assignment PIN_AH17 -to out[36]
+set_location_assignment PIN_AG16 -to out[35]
+set_location_assignment PIN_AE16 -to out[34]
+set_location_assignment PIN_AF16 -to out[33]
+set_location_assignment PIN_AG17 -to out[32]
+set_location_assignment PIN_AA18 -to out[31]
+set_location_assignment PIN_AA19 -to out[30]
+set_location_assignment PIN_AE17 -to out[29]
+set_location_assignment PIN_AC20 -to out[28]
+set_location_assignment PIN_AH19 -to out[27]
+set_location_assignment PIN_AJ20 -to out[26]
+set_location_assignment PIN_AH20 -to out[25]
+set_location_assignment PIN_AK21 -to out[24]
+set_location_assignment PIN_AD19 -to out[23]
+set_location_assignment PIN_AD20 -to out[22]
+set_location_assignment PIN_AE18 -to out[21]
+set_location_assignment PIN_AE19 -to out[20]
+set_location_assignment PIN_AF20 -to out[19]
+set_location_assignment PIN_AF21 -to out[18]
+set_location_assignment PIN_AF19 -to out[17]
+set_location_assignment PIN_AG21 -to out[16]
+set_location_assignment PIN_AF18 -to out[15]
+set_location_assignment PIN_AG20 -to out[14]
+set_location_assignment PIN_AG18 -to out[13]
+set_location_assignment PIN_AJ21 -to out[12]
+set_location_assignment PIN_AB17 -to out[11]
+set_location_assignment PIN_AA21 -to out[10]
+set_location_assignment PIN_AB21 -to out[9]
+set_location_assignment PIN_AC23 -to out[8]
+set_location_assignment PIN_AD24 -to out[7]
+set_location_assignment PIN_AE23 -to out[6]
+set_location_assignment PIN_AE24 -to out[5]
+set_location_assignment PIN_AF25 -to out[4]
+set_location_assignment PIN_AF26 -to out[3]
+set_location_assignment PIN_AG25 -to out[2]
+set_location_assignment PIN_AG26 -to out[1]
+set_location_assignment PIN_AH24 -to out[0]
+set_location_assignment PIN_AH27 -to outFlag
+set_location_assignment PIN_AJ27 -to reset
+set_location_assignment PIN_AF14 -to clock
